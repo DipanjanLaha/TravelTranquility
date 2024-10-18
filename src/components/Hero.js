@@ -228,7 +228,12 @@ const PopularSearch = styled.div`
   }
 `;
 const SearchBar = () => {
+  const [searchInput, setSearchInput] = useState('');
   const navigate = useNavigate();
+
+  const handleSearchClick = () => {
+    navigate('/transport', { state: { searchQuery: searchInput } });
+  };
 
   return (
     <SearchBarWrapper>
@@ -236,7 +241,9 @@ const SearchBar = () => {
         <SearchBarContainer>
           <InputContainer>
             <InputLabel>Location</InputLabel>
-            <InputField type="text" placeholder="Enter your destination" />
+            <InputField type="text"
+              value={searchInput}
+              onChange={(e) => setSearchInput(e.target.value)} placeholder="Enter your destination" />
             <FaChevronDown style={{ position: 'absolute', right: '15px', top: '40px', color: '#7aab35' }} />
           </InputContainer>
 
@@ -252,7 +259,7 @@ const SearchBar = () => {
             <FaChevronDown style={{ position: 'absolute', right: '15px', top: '40px', color: '#7aab35' }} />
           </InputContainer>
 
-          <ExploreButton onClick={() => navigate('/transport')}>Explore Now</ExploreButton>
+          <ExploreButton onClick={handleSearchClick}>Explore Now</ExploreButton>
         </SearchBarContainer>
 
         <PopularSearch>
@@ -329,35 +336,35 @@ const App = () => {
     setChatbotVisible(false); // Hide the chatbot
   };
 
-const getBotResponse = (input) => {
-  const lowerCaseInput = input.toLowerCase();
-  let responseText;
+  const getBotResponse = (input) => {
+    const lowerCaseInput = input.toLowerCase();
+    let responseText;
 
 
-  // Define keywords for various responses
-  const greetings = ['hello', 'hi', 'hey'];
-  const helpKeywords = ['help', 'assist', 'support'];
-  const bookingKeywords = ['book', 'reservation', 'schedule'];
+    // Define keywords for various responses
+    const greetings = ['hello', 'hi', 'hey'];
+    const helpKeywords = ['help', 'assist', 'support'];
+    const bookingKeywords = ['book', 'reservation', 'schedule'];
 
-  // Check for greetings
-  if (greetings.some((greeting) => lowerCaseInput.includes(greeting))) {
-    responseText = 'Hello! How can I assist you today?';
-  } 
-  // Check for help-related keywords
-  else if (helpKeywords.some((keyword) => lowerCaseInput.includes(keyword))) {
-    responseText = 'I can help you with finding locations and travel information.';
-  } 
-  // Check for booking-related keywords
-  else if (bookingKeywords.some((keyword) => lowerCaseInput.includes(keyword))) {
-    responseText = 'What would you like to book? A flight, hotel, or something else?';
-  } 
-  // Default response for unrecognized input
-  else {
-    responseText = 'I\'m sorry, I didn\'t understand that. Can you please rephrase?';
-  }
+    // Check for greetings
+    if (greetings.some((greeting) => lowerCaseInput.includes(greeting))) {
+      responseText = 'Hello! How can I assist you today?';
+    }
+    // Check for help-related keywords
+    else if (helpKeywords.some((keyword) => lowerCaseInput.includes(keyword))) {
+      responseText = 'I can help you with finding locations and travel information.';
+    }
+    // Check for booking-related keywords
+    else if (bookingKeywords.some((keyword) => lowerCaseInput.includes(keyword))) {
+      responseText = 'What would you like to book? A flight, hotel, or something else?';
+    }
+    // Default response for unrecognized input
+    else {
+      responseText = 'I\'m sorry, I didn\'t understand that. Can you please rephrase?';
+    }
 
-  return { text: responseText, isUser: false };
-};
+    return { text: responseText, isUser: false };
+  };
 
 
   if (loading) {

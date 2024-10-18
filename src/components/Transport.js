@@ -1,7 +1,27 @@
 import React from "react";
 import "./Transport.css"; // CSS for styling both Header and TourCards
-import { Link } from "react-router-dom"; 
+import styled from 'styled-components';
+import { Link } from "react-router-dom";
 import { useNavigate } from 'react-router-dom'; // Import the useNavigate hook
+import { useLocation } from 'react-router-dom';
+import axios from 'axios';
+import { useState, useEffect } from "react";
+
+const CityList = styled.ul`
+  margin-top: 20px;
+  list-style-type: none;
+  padding-left: 0;
+`;
+
+const CityItem = styled.li`
+  font-size: 1rem;
+  color: #333;
+  margin: 5px 0;
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid #ccc;
+  padding: 10px 0;
+`;
 
 // Array of tours
 const tours = [
@@ -27,6 +47,28 @@ const tours = [
 
 // Main component that combines the Header and TourCards
 const TourPage = () => {
+
+  const location = useLocation();
+  const [cities, setCities] = useState([]); // State for cities list
+  const searchQuery = location.state?.searchQuery || '';
+  const [error, setError] = useState(''); // State for error handling
+
+  useEffect(() => {
+    if (!searchQuery) return; // Do nothing if state input is empty
+
+    // Fetch cities from backend
+    axios.get(`http://localhost:5000/cities?state=${searchQuery}`)
+      .then(response => {
+        setCities(response.data); // Update the cities list with full objects
+        setError(''); // Clear any previous error
+      })
+      .catch(err => {
+        setError('No cities found for this state'); // Show error if no cities found
+        setCities([]); // Clear cities if error
+      });
+  }, [searchQuery]);
+  
+
   const navigate = useNavigate(); // Declare the useNavigate hook
 
   // Function to handle button click and navigate to detail page
@@ -36,13 +78,13 @@ const TourPage = () => {
 
   return (
     <div className="tour-page-container">
-      
+
       {/* Logo Section */}
       <div className="logo-container">
         <Link to="/"> {/* Link that redirects to homepage */}
           <img src="/destination.png" alt="Travel Tranquility Logo" className="logo" />
         </Link>
-        
+
         <span className="logo-text">TRANQUILITY</span>
       </div>
 
@@ -73,6 +115,25 @@ const TourPage = () => {
           </div>
         </div>
       </section>
+
+      {error && <p style={{ color: 'red', textAlign: 'center' }}>{error}</p>}
+
+      {/* List of Destinations */}
+      <CityList>
+        {cities.map((city, index) => (
+          <CityItem key={index}>
+            <div>
+              <strong>{city.City}</strong>, {city.State}
+            </div>
+            <div><flex>
+              {/* Add any other data you want to display */}
+              Ideal Duration: {city.Ideal_duration || 'N/A'}
+              City Desc: {city.City_desc || 'N/A'}
+            </flex>
+            </div>
+          </CityItem>
+        ))}
+      </CityList>
 
       {/* Tour Cards Section */}
       <section className="tour-cards-section">
