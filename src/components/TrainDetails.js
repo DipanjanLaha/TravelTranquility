@@ -7,7 +7,7 @@ function TrainDetails() {
   // Fetch train details from the API or use static data
   useEffect(() => {
     // Example: Fetching data from an API (you can replace this with your actual API)
-    axios.get('http://localhost:5000/api/trains')
+    axios.get('http://localhost:5000/trains/BWN/HWH')
       .then(response => {
         setTrains(response.data);
       })
@@ -42,13 +42,13 @@ function TrainDetails() {
           </thead>
           <tbody>
             {trains.map((train, index) => (
-              <tr key={train.id}>
-                <td>{index + 1}</td>
-                <td>{train.name}</td>
-                <td>{train.source}</td>
-                <td>{train.destination}</td>
-                <td>{train.time}</td>
-              </tr>
+              <><div>
+                <strong>{train.trainNumber}</strong>, {train.trainName}, {train.sourceStation || 'N/A'}, {train.destinationStation || 'N/A'},
+                {train.departureDate || 'N/A'}, {train.departureTime || 'N/A'}, {train.duration || 'N/A'}, {train.distance || 'N/A'}
+              </div><div><flex>
+                {/* Add any other data you want to display */}
+              </flex>
+                </div></>
             ))}
           </tbody>
         </table>

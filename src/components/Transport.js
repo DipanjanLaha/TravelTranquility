@@ -23,6 +23,11 @@ const CityItem = styled.li`
   padding: 10px 0;
 `;
 
+const stationCode = new Map([
+  ["ladakh", "NDLS"],
+  ["kolkata", "HWH"]
+])
+
 // Array of tours
 const tours = [
   {
@@ -52,8 +57,10 @@ const TourPage = () => {
   const [cities, setCities] = useState([]); // State for cities list
   const { searchQuery, fromWhere } = location.state || ''; // searchQuery->TO || fromWhere->FROM
   const [error, setError] = useState(''); // State for error handling
+  const [trains, setTrains] = useState([]);
 
-  console.log(fromWhere);
+  var srcCode = stationCode.get(`${searchQuery}`); // getting SRC station code from map
+  var destCode = stationCode.get(`${fromWhere}`); // getting DEST station code from map
 
   useEffect(() => {
     if (!searchQuery) return; // Do nothing if state input is empty
@@ -69,6 +76,24 @@ const TourPage = () => {
         setCities([]); // Clear cities if error
       });
   }, [searchQuery]);
+
+  useEffect(() => {
+    // Example: Fetching data from an API (you can replace this with your actual API)
+    axios.get(`http://localhost:5000/trains/${srcCode}/${destCode}`)
+      .then(response => {
+        setTrains(response.data);
+      })
+      .catch(error => {
+        console.error("There was an error fetching the train data!", error);
+      });
+
+    // Alternatively, use static train data like this:
+    // setTrains([
+    //   { id: 1, name: 'Express 101', source: 'City A', destination: 'City B', time: '10:00 AM' },
+    //   { id: 2, name: 'Local 202', source: 'City C', destination: 'City D', time: '2:00 PM' },
+    //   { id: 3, name: 'SuperFast 303', source: 'City E', destination: 'City F', time: '6:00 PM' }
+    // ]);
+  }, []);
   
 
   const navigate = useNavigate(); // Declare the useNavigate hook
@@ -136,6 +161,37 @@ const TourPage = () => {
           </CityItem>
         ))}
       </CityList>
+
+      <div className="train-details-container">
+      <h1>Train Details</h1>
+
+      {trains.length === 0 ? (
+        <p>Loading train details...</p>
+      ) : (
+        <table className="train-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Train Name</th>
+              <th>Source</th>
+              <th>Destination</th>
+              <th>Time</th>
+            </tr>
+          </thead>
+          <tbody>
+            {trains.map((train, index) => (
+              <><div>
+                <strong>{train.trainNumber}</strong>, {train.trainName}, {train.sourceStation || 'N/A'}, {train.destinationStation || 'N/A'},
+                {train.departureDate || 'N/A'}, {train.departureTime || 'N/A'}, {train.duration || 'N/A'}, {train.distance || 'N/A'}
+              </div><div><flex>
+                {/* Add any other data you want to display */}
+              </flex>
+                </div></>
+            ))}
+          </tbody>
+        </table>
+      )}
+    </div>
 
       {/* Tour Cards Section */}
       <section className="tour-cards-section">
