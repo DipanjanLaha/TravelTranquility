@@ -50,8 +50,10 @@ const TourPage = () => {
 
   const location = useLocation();
   const [cities, setCities] = useState([]); // State for cities list
-  const searchQuery = location.state?.searchQuery || '';
+  const { searchQuery, fromWhere } = location.state || ''; // searchQuery->TO || fromWhere->FROM
   const [error, setError] = useState(''); // State for error handling
+
+  console.log(fromWhere);
 
   useEffect(() => {
     if (!searchQuery) return; // Do nothing if state input is empty

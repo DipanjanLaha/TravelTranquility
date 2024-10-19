@@ -229,10 +229,13 @@ const PopularSearch = styled.div`
 `;
 const SearchBar = () => {
   const [searchInput, setSearchInput] = useState('');
+  const [searchInputFrom, setSearchInputFrom] = useState('');
   const navigate = useNavigate();
 
   const handleSearchClick = () => {
-    navigate('/transport', { state: { searchQuery: searchInput } });
+    navigate('/transport', { state: { searchQuery: searchInput,
+                                      fromWhere: searchInputFrom
+     } });
   };
 
   return (
@@ -244,7 +247,15 @@ const SearchBar = () => {
             <InputField type="text"
               value={searchInput}
               onChange={(e) => setSearchInput(e.target.value)} placeholder="Enter your destination" />
-            <FaChevronDown style={{ position: 'absolute', right: '15px', top: '40px', color: '#7aab35' }} />
+            {/*<FaChevronDown style={{ position: 'absolute', right: '15px', top: '40px', color: '#7aab35' }} />*/}
+          </InputContainer>
+
+          <InputContainer>
+            <InputLabel>From</InputLabel>
+            <InputField type="text"
+              value={searchInputFrom}
+              onChange={(e) => setSearchInputFrom(e.target.value)} placeholder="Enter your location" />
+            {/*<FaChevronDown style={{ position: 'absolute', right: '15px', top: '40px', color: '#7aab35' }} />*/}
           </InputContainer>
 
           <InputContainer>
