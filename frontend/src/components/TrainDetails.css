@@ -1,0 +1,105 @@
+/* Container styles */
+.train-details-container {
+  font-family: 'Roboto', sans-serif;
+  padding: 30px;
+}
+
+/* Heading styles */
+.train-details-container h1 {
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 20px;
+  color: #2e582f;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+/* Form styles */
+form {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+label {
+  display: block;
+  margin-bottom: 10px;
+  font-weight: 600;
+  color: #333;
+}
+
+input[type="text"] {
+  padding: 10px;
+  border: 2px solid #2e582f;
+  border-radius: 5px;
+  width: 150px;
+  font-size: 1rem;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+input[type="text"]:focus {
+  border-color: #3483d4;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.2);
+}
+
+button {
+  padding: 10px 20px;
+  background-color: #2e582f;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #2e642f;
+}
+
+/* Table styles */
+.train-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  background-color: #ffffff;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.train-table thead {
+  background-color: #2e582f;
+  color: #ffffff;
+}
+
+.train-table th, .train-table td {
+  padding: 12px 20px;
+  text-align: center;
+}
+
+.train-table th {
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.train-table tbody tr {
+  transition: background-color 0.3s ease;
+}
+
+.train-table tbody tr:nth-child(odd) {
+  background-color: #f9f9f9;
+}
+
+.train-table tbody tr:hover {
+  background-color: #f1f5f9;
+}
+
+/* Loading and error messages */
+p {
+  text-align: center;
+  color: #ff6f61;
+  font-size: 1.2rem;
+}
