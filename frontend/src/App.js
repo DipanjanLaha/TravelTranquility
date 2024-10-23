@@ -11,6 +11,8 @@ import BlogPage from "./pages/BlogPage";
 import FeedbackPage from "./pages/FeedbackPage";
 import DestinationPage from "./pages/DestinationPage";
 import ContactPage from "./pages/ConatctPage"
+import CityDetails from './components/CityDetails';
+
 
 function App() {
   return (
@@ -39,6 +41,7 @@ function App() {
           <Route path="/Contact" element={<ContactPage />} />
           <Route path="/Feedback" element={<FeedbackPage />} />
           <Route path="/Destination" element={<DestinationPage />} />
+          <Route path="/city-details/:cityName" element={<CityDetails />} /> {/* Route for city details */}
 
         </Routes>
       </div>

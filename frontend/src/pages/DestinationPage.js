@@ -6,7 +6,6 @@ function DestinationPage() {
     return (
         <div>
             <Header></Header>
-            <h1>Destination Page</h1>
             <h1>Destination Table</h1>
             <CsvTable />
         </div>

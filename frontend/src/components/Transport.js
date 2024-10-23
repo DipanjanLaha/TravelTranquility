@@ -1,82 +1,117 @@
 import React from "react";
 import "./Transport.css"; // CSS for styling both Header and TourCards
-import styled, { keyframes } from 'styled-components';
-import { Link } from "react-router-dom";
-import { useNavigate } from 'react-router-dom'; // Import the useNavigate hook
-import { useLocation } from 'react-router-dom';
+import styled from 'styled-components';
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import axios from 'axios';
 import { useState, useEffect } from "react";
-
-
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCaretRight } from '@fortawesome/free-solid-svg-icons';
+import { faCircleChevronDown } from '@fortawesome/free-solid-svg-icons';
+// Station codes mapping
 const stationCode = new Map([
   ["ladakh", "NDLS"],
   ["kolkata", "HWH"]
-])
+]);
 
-
-// Styled components
+// Styled components for CityGrid and CityItem
 const CityGrid = styled.div`
   display: grid;
-  grid-template-rows: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 15px;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
   margin-top: 40px;
   padding: 20px;
   background-color: #f9f9f9;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0);
 `;
 
 const CityItem = styled.div`
-  background-color: #f1f1f1;
-  padding: 15px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  overflow: hidden;
-  position: relative;
+  background-color: #fff;
+  border-radius: 15px;
+  border: 1px solid #e0e0e0;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease, color 0.3s ease;
   cursor: pointer;
-  
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+
   &:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0);
+    animation: bounceToTop 0.6s ease forwards; /* Apply bounce animation */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    background-color: #f0f8ff;
+    color: #1d4f91;
+
+    /* Update the child elements when parent is hovered */
+    .card-title {
+      color: #1d4f91;
+    }
+
+    .card-text {
+      color: #555;
+    }
+
+    h6 {
+      color: #777;
+    }
   }
 
-  .city-info {
-    margin-top: 10px;
+  /* Keyframes for bounce animation */
+  @keyframes bounceToTop {
+    0% {
+      transform: translateY(0);
+    }
+    30% {
+      transform: translateY(-10px);
+    }
+    50% {
+      transform: translateY(0);
+    }
+    100% {
+      transform: translateY(-5px); /* Subtle final bounce position */
+    }
   }
 
-  strong {
-    font-size: 1.4rem;
+  .card-body {
+    padding: 20px;
+  }
+
+  .card-title {
+    font-size: 1.6rem;
     color: #2e582f;
+    margin-bottom: 12px;
+    font-weight: bold;
+    transition: color 0.3s ease;
   }
 
-  .city-details {
-    margin-top: 10px;
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
+  .card-text {
+    font-size: 1rem;
+    color: #333;
+    margin-bottom: 15px;
+    transition: color 0.3s ease;
+  }
 
-    .city-data {
-      background-color: #ffff;
-      border-radius: 5px;
-      padding: 10px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      transition: background-color 0.3s ease;
+  h6 {
+    font-size: 15px;
+    margin-bottom: 12px;
+    color: #aaaa;
+    transition: color 0.3s ease;
+  }
 
-      &:hover {
-        background-color: #98c5cd;
-      }
+  .btn {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
 
-      .label {
-        font-weight: bold;
-        color: #2e582f;
-      }
-
-      .value {
-        color: #333;
-        font-size: 16px;
-      }
+    &:hover {
+      background-color: #0056b3;
+      transform: translateY(-3px); /* Slight button lift on hover */
     }
   }
 `;
@@ -84,68 +119,81 @@ const CityItem = styled.div`
 // Array of tours
 const tours = [
   {
-    title: " Train",
-    image: "./train.jpg", // Replace with actual image path
-    route: "/trains", // Added route for Train
+    title: "Train",
+    image: "./train.jpg",
+    route: "/trains",
   },
   {
-    title: " Road",
-    image: "./road.jpg", // Replace with actual image path
-    route: "/buses", // Added route for Bus
+    title: "Road",
+    image: "./road.jpg",
+    route: "/buses",
   },
   {
     title: "Flight",
-    image: "./flightt.jpg", // Replace with actual image path
-    route: "/flights", // Added route for Flight
+    image: "./flightt.jpg",
+    route: "/flights",
   },
 ];
 
 // Main component that combines the Header and TourCards
 const TourPage = () => {
-
   const location = useLocation();
-  const [cities, setCities] = useState([]); // State for cities list
-  const { searchQuery, fromWhere } = location.state || ''; // searchQuery->TO || fromWhere->FROM
-  const [error, setError] = useState(''); // State for error handling
-  const [setTrains] = useState([]);
+  const [cities, setCities] = useState([]);
+  const { searchQuery, fromWhere } = location.state || {}; // searchQuery->TO || fromWhere->FROM
+  const [error, setError] = useState('');
+  const [trains, setTrains] = useState([]);
+  const [loading, setLoading] = useState(false);
 
-  var srcCode = stationCode.get(`${searchQuery}`); // getting SRC station code from map
-  var destCode = stationCode.get(`${fromWhere}`); // getting DEST station code from map
+  const srcCode = stationCode.get(`${searchQuery}`); // getting SRC station code from map
+  const destCode = stationCode.get(`${fromWhere}`); // getting DEST station code from map
 
   useEffect(() => {
-    if (!searchQuery) return; // Do nothing if state input is empty
+    if (!searchQuery) return;
 
     // Fetch cities from backend
     axios.get(`http://localhost:5000/cities?state=${searchQuery}`)
       .then(response => {
-        setCities(response.data); // Update the cities list with full objects
-        setError(''); // Clear any previous error
+        setCities(response.data);
+        setError('');
       })
-      .catch(err => {
-        setError('No cities found for this state'); // Show error if no cities found
-        setCities([]); // Clear cities if error
+      .catch(() => {
+        setError('No cities found for this state');
+        setCities([]);
       });
   }, [searchQuery]);
 
+  useEffect(() => {
+    if (!srcCode || !destCode) return;
 
-  
+    // Fetch train data from API
+    axios.get(`http://localhost:5000/trains/${srcCode}/${destCode}`)
+      .then(response => {
+        setTrains(response.data);
+      })
+      .catch(error => {
+        console.error("Error fetching the train data:", error);
+      });
+  }, [srcCode, destCode]);
 
-  const navigate = useNavigate(); // Declare the useNavigate hook
+  const navigate = useNavigate();
 
-  // Function to handle button click and navigate to detail page
-  const handleButtonClick = (route) => {
-    navigate(route); // Redirect to the corresponding detail page
+  // Function to handle city details navigation
+  const handleCityClick = (city) => {
+    navigate(`/city-details/${city.City}`, { state: { cityData: city } });
+  };
+
+  // Function to handle tour navigation
+  const handleTourClick = (route) => {
+    navigate(route); // Navigates to the respective tour route (train, bus, flight)
   };
 
   return (
     <div className="tour-page-container">
-
       {/* Logo Section */}
       <div className="logo-container">
-        <Link to="/"> {/* Link that redirects to homepage */}
+        <Link to="/">
           <img src="/destination.png" alt="Travel Tranquility Logo" className="logo" />
         </Link>
-
         <span className="logo-text">TRANQUILITY</span>
       </div>
 
@@ -155,14 +203,9 @@ const TourPage = () => {
         <p>Try a variety of benefits when using our services</p>
         <div className="features">
           <div className="feature-item">
-            <img src="./plane.gif" alt="Airport Pickup" />
-            <h3>Airport pickup</h3>
-            <p>We provide escort from the airport to the hotel</p>
-          </div>
-          <div className="feature-item">
-            <img src="./booking.gif" alt="Easy Booking" />
+            <img src="./bookk.gif" alt="Easy Booking" />
             <h3>Easy booking</h3>
-            <p>Quick and easy booking of tours for upcoming dates</p>
+            <p>Quick and easy booking for upcoming dates</p>
           </div>
           <div className="feature-item">
             <img src="./guide.gif" alt="Digital Tour Guide" />
@@ -170,7 +213,7 @@ const TourPage = () => {
             <p>Our digital tour guide is ready to guide your trip</p>
           </div>
           <div className="feature-item">
-            <img src="./promo.gif" alt="Lots of Promos" />
+            <img src="./prom.gif" alt="Lots of Promos" />
             <h3>Lots of promos</h3>
             <p>Various promotions and drawings of tours</p>
           </div>
@@ -180,25 +223,21 @@ const TourPage = () => {
       {error && <p style={{ color: 'red', textAlign: 'center' }}>{error}</p>}
 
       {/* List of Destinations */}
+      <div className="topic">
+        <h1>Places to visit..</h1>
+      </div>
       <CityGrid>
         {cities.map((city, index) => (
           <CityItem key={index}>
-            <div className="city-info">
-              <strong>{city.City}</strong>
-              <div className="city-details">
-                <div className="city-data">
-                  <span className="label">State:</span>
-                  <span className="value">{city.State}</span>
-                </div>
-                <div className="city-data">
-                  <span className="label">Ideal Duration:</span>
-                  <span className="value">{city.Ideal_duration || 'N/A'}</span>
-                </div>
-                <div className="city-data">
-                  <span className="label">City Description:</span>
-                  <span className="value">{city.City_desc || 'N/A'}</span>
-                </div>
-              </div>
+            <div className="card-body">
+              <h5 className="card-title">{city.City}</h5>
+              <h6>Explore more</h6>
+              <FontAwesomeIcon
+                icon={faCircleChevronDown}
+                size="2x"
+                onClick={() => handleCityClick(city)}
+                style={{ cursor: 'pointer', color: '#2e582f' }}
+              />
             </div>
           </CityItem>
         ))}
@@ -211,16 +250,11 @@ const TourPage = () => {
           {tours.map((tour, index) => (
             <div className="tour-card" key={index}>
               <img src={tour.image} alt={tour.title} className="tour-image" />
-              <div className="tour-info">
-                </div>
-                <h3>{tour.title}</h3>
-                <div>
-                  {/* The arrow button that redirects to the respective detail page */}
-                  <button className="arrow-button" onClick={() => handleButtonClick(tour.route)}>
-                    --→
-                  </button>
-                </div>
-              </div>
+              <h3>{tour.title}</h3>
+              <button className="arrow-button" onClick={() => handleTourClick(tour.route)}>
+              <FontAwesomeIcon icon={faCaretRight} size="2x" />              
+              </button>
+            </div>
           ))}
         </div>
       </section>
