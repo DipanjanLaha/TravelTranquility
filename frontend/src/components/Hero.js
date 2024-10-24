@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
-import { FaChevronDown } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import Message from './Message';
 import { MdClose } from 'react-icons/md';
@@ -291,26 +290,9 @@ const App = () => {
   const chatBodyRef = useRef(null);
   const firstTimeOpenRef = useRef(true); // Track if chatbot is opened for the first time
 
-<<<<<<< HEAD
-
   const videoSrc = '/load.mp4';
   const images = ['/museum.jpg', '/Czech-Fields-Houses.jpg', '/Gangtok.jpg', '/pool.jpg', '/temple.jpeg.jpg'];
-=======
-<<<<<<< HEAD
-
-  const videoSrc = '/load.mp4';
-  const images = ['/museum.jpg', '/Czech-Fields-Houses.jpg', '/Gangtok.jpg', '/pool.jpg', '/temple.jpeg.jpg'];
-=======
-  const gifSrc = "./loading.gif"; // Path to the loading GIF
-  const images = [
-    '/museum.jpg',
-    '/Czech-Fields-Houses.jpg',
-    '/Gangtok.jpg',
-    '/pool.jpg',
-    '/temple.jpeg.jpg',
-  ];
->>>>>>> 1ee916486bc62f5add68b0837f3a306713af43ec
->>>>>>> 0963eb032992c69713be65276238f38cecacf7ba
+  const gifSrc = "/loading.gif"; // Path to the loading GIF
 
   useEffect(() => {
     const timer = setTimeout(() => setLoading(false), 3000);
@@ -397,7 +379,7 @@ const App = () => {
     return (
       <LoadingContainer>
         <Video autoPlay loop muted>
-          <source src={videoSrc} type="video/mp4" />
+          <source src={gifSrc} type="video/mp4" />
           Your browser does not support HTML5 video.
         </Video>
       </LoadingContainer>
