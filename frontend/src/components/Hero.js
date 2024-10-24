@@ -12,10 +12,11 @@ const LoadingContainer = styled.div`
   align-items: center;
   height: 100vh;
   width: 100vw;
+  background-color: #fff; /* Optional background color while loading */
 `;
 
-const Video = styled.video`
-  width: 100%;
+const Gif = styled.img`
+  width: 300px;
   height: auto;
 `;
 
@@ -291,13 +292,36 @@ const App = () => {
   const chatBodyRef = useRef(null);
   const firstTimeOpenRef = useRef(true); // Track if chatbot is opened for the first time
 
+<<<<<<< HEAD
 
   const videoSrc = '/load.mp4';
   const images = ['/museum.jpg', '/Czech-Fields-Houses.jpg', '/Gangtok.jpg', '/pool.jpg', '/temple.jpeg.jpg'];
+=======
+  const gifSrc = "./loading.gif"; // Path to the loading GIF
+  const images = [
+    '/museum.jpg',
+    '/Czech-Fields-Houses.jpg',
+    '/Gangtok.jpg',
+    '/pool.jpg',
+    '/temple.jpeg.jpg',
+  ];
+>>>>>>> 1ee916486bc62f5add68b0837f3a306713af43ec
 
   useEffect(() => {
-    const timer = setTimeout(() => setLoading(false), 3000);
-    return () => clearTimeout(timer);
+    // Check if the user has already visited the site
+    const hasVisited = localStorage.getItem('hasVisited');
+
+    if (!hasVisited) {
+      setLoading(true);
+      const timer = setTimeout(() => {
+        setLoading(false);
+        localStorage.setItem('hasVisited', 'true'); // Store a flag in localStorage
+      }, 5000); // Show GIF for 5 seconds
+
+      return () => clearTimeout(timer);
+    } else {
+      setLoading(false); // Skip the loading screen if user has already visited
+    }
   }, []);
 
   useEffect(() => {
@@ -379,10 +403,7 @@ const App = () => {
   if (loading) {
     return (
       <LoadingContainer>
-        <Video autoPlay loop muted>
-          <source src={videoSrc} type="video/mp4" />
-          Your browser does not support HTML5 video.
-        </Video>
+        <Gif src={gifSrc} alt="Loading..." />
       </LoadingContainer>
     );
   }
@@ -400,7 +421,7 @@ const App = () => {
       <SearchBar />
 
       <ChatbotGif
-        src="/chatbot.png" // Update with your GIF path
+        src="/bot.png" // Update with your GIF path
         alt="Chatbot"
         onClick={toggleChatbot}
       />
