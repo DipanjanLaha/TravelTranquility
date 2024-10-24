@@ -291,9 +291,26 @@ const App = () => {
   const chatBodyRef = useRef(null);
   const firstTimeOpenRef = useRef(true); // Track if chatbot is opened for the first time
 
+<<<<<<< HEAD
 
   const videoSrc = '/load.mp4';
   const images = ['/museum.jpg', '/Czech-Fields-Houses.jpg', '/Gangtok.jpg', '/pool.jpg', '/temple.jpeg.jpg'];
+=======
+<<<<<<< HEAD
+
+  const videoSrc = '/load.mp4';
+  const images = ['/museum.jpg', '/Czech-Fields-Houses.jpg', '/Gangtok.jpg', '/pool.jpg', '/temple.jpeg.jpg'];
+=======
+  const gifSrc = "./loading.gif"; // Path to the loading GIF
+  const images = [
+    '/museum.jpg',
+    '/Czech-Fields-Houses.jpg',
+    '/Gangtok.jpg',
+    '/pool.jpg',
+    '/temple.jpeg.jpg',
+  ];
+>>>>>>> 1ee916486bc62f5add68b0837f3a306713af43ec
+>>>>>>> 0963eb032992c69713be65276238f38cecacf7ba
 
   useEffect(() => {
     const timer = setTimeout(() => setLoading(false), 3000);
