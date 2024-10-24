@@ -290,7 +290,7 @@ const App = () => {
   const chatBodyRef = useRef(null);
   const firstTimeOpenRef = useRef(true); // Track if chatbot is opened for the first time
 
-  const videoSrc = '/load.mp4';
+  const videoSrc = '/loading_vid.mp4';
   const images = ['/museum.jpg', '/Czech-Fields-Houses.jpg', '/Gangtok.jpg', '/pool.jpg', '/temple.jpeg.jpg'];
   const gifSrc = "/loading.gif"; // Path to the loading GIF
 
@@ -379,7 +379,7 @@ const App = () => {
     return (
       <LoadingContainer>
         <Video autoPlay loop muted>
-          <source src={gifSrc} type="video/mp4" />
+          <source src={videoSrc} type="video/mp4" />
           Your browser does not support HTML5 video.
         </Video>
       </LoadingContainer>

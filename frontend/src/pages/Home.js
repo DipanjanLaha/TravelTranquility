@@ -7,8 +7,6 @@ const Home = () => {
     <>
       <Header />
       <Hero />
-      
-
     </>
   );
 }
