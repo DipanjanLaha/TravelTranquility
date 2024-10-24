@@ -12,11 +12,10 @@ const LoadingContainer = styled.div`
   align-items: center;
   height: 100vh;
   width: 100vw;
-  background-color: #fff; /* Optional background color while loading */
 `;
 
-const Gif = styled.img`
-  width: 300px;
+const Video = styled.video`
+  width: 100%;
   height: auto;
 `;
 
@@ -29,13 +28,14 @@ const SlideshowContainer = styled.div`
 `;
 
 const SlideshowImage = styled.img`
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 100vh;
   object-fit: cover;
   position: absolute;
+  top: 0;
+  left: 0;
   opacity: 0;
   transition: opacity 0.8s ease;
-
   &.active {
     opacity: 1;
   }
@@ -51,7 +51,6 @@ const ChatbotGif = styled.img`
   cursor: pointer;
   z-index: 1000;
   transition: transform 0.3s ease;
-
   &:hover {
     transform: scale(1.1);
   }
@@ -59,15 +58,14 @@ const ChatbotGif = styled.img`
 
 const CloseIcon = styled(MdClose)`
   position: absolute;
-  right: 15px; /* Position it on the right */
-  top: 15px; /* Position it at the top */
-  cursor: pointer; /* Change cursor to pointer */
-  font-size: 1.5rem; /* Size of the icon */
-  color: white; /* Color of the icon */
-  transition: color 0.3s ease; /* Transition for hover effect */
-
+  right: 15px;
+  top: 15px;
+  cursor: pointer;
+  font-size: 1.5rem;
+  color: white;
+  transition: color 0.3s ease;
   &:hover {
-    color: #ff4d4d; /* Change color on hover */
+    color: #ff4d4d;
   }
 `;
 
@@ -125,32 +123,31 @@ const SearchBarWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  position: absolute; /* Position over the slideshow */
-  top: 0;
-  left: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   width: 100%;
-  height: 100%;
-  z-index: 1; /* Ensure it's above the slideshow */
+  z-index: 1;
 `;
 
 const SearchBarContainer = styled.div`
-  background-color: rgba(255, 255, 255, 0.5);
-  padding: 30px 50px;
+  background-color: rgba(255, 255, 255, 0.7);
+  padding: 30px;
+  border-radius: 20px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-radius: 20px;
-  box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.1);
+  width: 100%;
   max-width: 1200px;
-  width: 100%; /* Make it full width but constrained by max-width */
-  margin: 0 auto;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
 `;
 
 const InputContainer = styled.div`
   display: flex;
   flex-direction: column;
-  position: relative;
   margin-right: 20px;
+  position: relative;
 
   &::after {
     content: '';
@@ -158,85 +155,80 @@ const InputContainer = styled.div`
     right: 15px;
     top: 50%;
     transform: translateY(-50%);
-    font-size: 12px;
     pointer-events: none;
-    color: #2e582f;
+    color: #7aab35;
   }
 `;
 
 const InputLabel = styled.label`
-  font-size: 1rem;
+  font-size: 0.9rem;
   font-weight: bold;
-  color: #2e582f;
   margin-bottom: 5px;
+  color: #2e582f;
 `;
 
 const InputField = styled.input`
-  padding: 12px 15px;
-  padding-right: 40px; /* space for dropdown icon */
+  padding: 10px 12px;
   border: 2px solid #ccc;
-  border-radius: 12px;
+  border-radius: 10px;
   font-size: 1rem;
-  min-width: 250px;
-  transition: border-color 0.3s ease;
-
+  min-width: 180px;
   &:focus {
-    outline: none;
     border-color: #7aab35;
+    outline: none;
   }
 `;
 
 const ExploreButton = styled.button`
   background-color: #2e582f;
   color: white;
+  padding: 15px 20px;
   border: none;
-  padding: 15px 30px;
-  border-radius: 12px;
-  font-size: 1.1rem;
+  border-radius: 10px;
+  font-size: 1rem;
   font-weight: bold;
   cursor: pointer;
-  transition: background-color 0.3s ease, box-shadow 0.3s ease;
   box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
 
   &:hover {
     background-color: #67924d;
-    box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.2);
   }
 
   &:focus {
-    outline: none; /* Avoid focus outline flicker */
+    outline: none;
   }
 `;
 
 const PopularSearch = styled.div`
-  margin-top: 15px;
+  margin-top: 20px;
   text-align: center;
   font-size: 0.9rem;
-  font-weight: 150px;
-  color: #000;
+  font-weight: 200px;
+  color: white;
 
   button {
     background: none;
     border: none;
-    color: #ffff;
+    color: white;
     font-weight: bold;
-    text-decoration: none;
+    text-decoration: underline;
     cursor: pointer;
 
     &:hover {
       text-decoration: none;
+      color: #2e582f;
     }
   }
 `;
+
 const SearchBar = () => {
   const [searchInput, setSearchInput] = useState('');
   const [searchInputFrom, setSearchInputFrom] = useState('');
   const navigate = useNavigate();
 
   const handleSearchClick = () => {
-    navigate('/transport', { state: { searchQuery: searchInput,
-                                      fromWhere: searchInputFrom
-     } });
+    navigate('/transport', { state: { searchQuery: searchInput, fromWhere: searchInputFrom } });
   };
 
   return (
@@ -245,30 +237,32 @@ const SearchBar = () => {
         <SearchBarContainer>
           <InputContainer>
             <InputLabel>Location</InputLabel>
-            <InputField type="text"
+            <InputField
+              type="text"
               value={searchInput}
-              onChange={(e) => setSearchInput(e.target.value)} placeholder="Enter your destination" />
-            {/*<FaChevronDown style={{ position: 'absolute', right: '15px', top: '40px', color: '#7aab35' }} />*/}
+              onChange={(e) => setSearchInput(e.target.value)}
+              placeholder="Enter your destination"
+            />
           </InputContainer>
 
           <InputContainer>
             <InputLabel>From</InputLabel>
-            <InputField type="text"
+            <InputField
+              type="text"
               value={searchInputFrom}
-              onChange={(e) => setSearchInputFrom(e.target.value)} placeholder="Enter your location" />
-            {/*<FaChevronDown style={{ position: 'absolute', right: '15px', top: '40px', color: '#7aab35' }} />*/}
+              onChange={(e) => setSearchInputFrom(e.target.value)}
+              placeholder="Enter your location"
+            />
           </InputContainer>
 
           <InputContainer>
             <InputLabel>Date</InputLabel>
-            <InputField type="date" placeholder="When will it start?" />
-            <FaChevronDown style={{ position: 'absolute', right: '15px', top: '40px', color: '#7aab35' }} />
+            <InputField type="date" />
           </InputContainer>
 
           <InputContainer>
             <InputLabel>People</InputLabel>
             <InputField type="number" placeholder="How many people?" />
-            <FaChevronDown style={{ position: 'absolute', right: '15px', top: '40px', color: '#7aab35' }} />
           </InputContainer>
 
           <ExploreButton onClick={handleSearchClick}>Explore Now</ExploreButton>
@@ -276,55 +270,40 @@ const SearchBar = () => {
 
         <PopularSearch>
           Popular Search:
-          <button onClick={() => console.log('Shimla clicked')}>Shimla</button>,
-          <button onClick={() => console.log('Kerala clicked')}>Kerala</button>,
-          <button onClick={() => console.log('Amritsar clicked')}>Amritsar</button>,
-          <button onClick={() => console.log('Goa clicked')}>Goa</button>
+          <button onClick={() => console.log('Mojokerto clicked')}>Mojokerto</button>,
+          <button onClick={() => console.log('Yogyakarta clicked')}>Yogyakarta</button>,
+          <button onClick={() => console.log('Lombok clicked')}>Lombok</button>,
+          <button onClick={() => console.log('Denpasar clicked')}>Denpasar</button>
         </PopularSearch>
       </div>
     </SearchBarWrapper>
   );
 };
 
-// App Component (Main homepage with slideshow and chatbot)
+// Main App Component
 const App = () => {
   const [loading, setLoading] = useState(true);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [chatbotVisible, setChatbotVisible] = useState(false);
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
-  const [isTyping, setIsTyping] = useState(false); // State for typing indicator
-  const chatBodyRef = useRef(null); // Ref for scrolling
+  const [isTyping, setIsTyping] = useState(false);
+  const chatBodyRef = useRef(null);
+  const firstTimeOpenRef = useRef(true); // Track if chatbot is opened for the first time
 
-  const gifSrc = "./loading.gif"; // Path to the loading GIF
-  const images = [
-    '/museum.jpg',
-    '/Czech-Fields-Houses.jpg',
-    '/Gangtok.jpg',
-    '/pool.jpg',
-    '/temple.jpeg.jpg',
-  ];
+
+  const videoSrc = '/load.mp4';
+  const images = ['/museum.jpg', '/Czech-Fields-Houses.jpg', '/Gangtok.jpg', '/pool.jpg', '/temple.jpeg.jpg'];
 
   useEffect(() => {
-    // Check if the user has already visited the site
-    const hasVisited = localStorage.getItem('hasVisited');
-
-    if (!hasVisited) {
-      setLoading(true);
-      const timer = setTimeout(() => {
-        setLoading(false);
-        localStorage.setItem('hasVisited', 'true'); // Store a flag in localStorage
-      }, 5000); // Show GIF for 5 seconds
-
-      return () => clearTimeout(timer);
-    } else {
-      setLoading(false); // Skip the loading screen if user has already visited
-    }
+    const timer = setTimeout(() => setLoading(false), 3000);
+    return () => clearTimeout(timer);
   }, []);
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentImageIndex((prevIndex) => (prevIndex + 1) % images.length);
+      setCurrentImageIndex((prevIndex) => (prevIndex + 1) %
+ images.length);
     }, 5000);
     return () => clearInterval(interval);
   }, [images.length]);
@@ -337,6 +316,12 @@ const App = () => {
 
   const toggleChatbot = () => {
     setChatbotVisible((prev) => !prev);
+
+    if (firstTimeOpenRef.current) {
+      // Add welcome message the first time chatbot opens
+      setMessages((prev) => [...prev, { text: 'Hello, what can I help you with?', isUser: false }]);
+      firstTimeOpenRef.current = false; // Mark as no longer the first time
+    }
   };
 
   const handleSend = () => {
@@ -394,7 +379,10 @@ const App = () => {
   if (loading) {
     return (
       <LoadingContainer>
-        <Gif src={gifSrc} alt="Loading..." />
+        <Video autoPlay loop muted>
+          <source src={videoSrc} type="video/mp4" />
+          Your browser does not support HTML5 video.
+        </Video>
       </LoadingContainer>
     );
   }
@@ -412,7 +400,7 @@ const App = () => {
       <SearchBar />
 
       <ChatbotGif
-        src="/bot.png" // Update with your GIF path
+        src="/chatbot.png" // Update with your GIF path
         alt="Chatbot"
         onClick={toggleChatbot}
       />

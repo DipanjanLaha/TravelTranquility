@@ -1,16 +1,37 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 import './LoginPage.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFacebookF, faApple, faGoogle } from '@fortawesome/free-brands-svg-icons';
 
 const Login = () => {
   const [email, setEmail] = useState('');
-  const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
+  const navigate = useNavigate(); // Initialize useNavigate
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log({ email, password });
+
+    try {
+      const response = await fetch('http://localhost:5000/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await response.json();
+      if (response.ok) {
+        console.log('Login successful', data.token);
+        // Store the token in localStorage (optional)
+        localStorage.setItem('token', data.token);
+        // Redirect to the home page
+        navigate('/');
+      } else {
+        console.error(data.message);
+      }
+    } catch (error) {
+      console.error('Login error:', error);
+    }
   };
 
   return (
@@ -29,13 +50,6 @@ const Login = () => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-            />
-            <input
-              type="tel"
-              placeholder="Phone Number"
-              value={phone}
-              onChange={(e) => setPhone(e.target.value)}
-              pattern="[0-9]{10}"
             />
             <input
               type="password"
@@ -68,10 +82,10 @@ const Login = () => {
           </div>
 
           <p className="terms">
-            <a href="/login">Forgot password?</a>
+            <a href="/forgot-password">Forgot password?</a>
           </p>
           <p className="terms">
-            <a href="SignUp">Don’t have an account yet? Sign up</a>
+            <a href="/signup">Don’t have an account yet? Sign up</a>
           </p>
         </div>
       </div>
