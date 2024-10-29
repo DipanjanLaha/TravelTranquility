@@ -5,7 +5,7 @@
   align-items: center;
   height: 100vh;
   background-color: #f0f2f5;
-  background-image: 'tree.png'); /* Optional: Background Image */
+  background-image: 'tree.png'; /* Optional: Background Image */
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -26,7 +26,7 @@
   flex-direction: column;
   align-items: center;
   text-align: center;
-  background: rgba(255, 255, 255, 0.8); /* More transparent */
+  background: rgba(255, 255, 255, 0.5); /* More transparent */
   border-radius: 20px;
 }
 
