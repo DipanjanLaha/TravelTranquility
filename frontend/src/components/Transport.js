@@ -146,7 +146,14 @@ const TourPage = () => {
 
   const srcCode = stationCode.get(`${searchQuery}`); // getting SRC station code from map
   const destCode = stationCode.get(`${fromWhere}`); // getting DEST station code from map
-
+  // Mapping city names to their respective images
+  const cityImages = {
+    Ladakh: "./images/ladakh.jpg",
+    Kolkata: "./images/kolkata.jpg",
+    Delhi: "./images/delhi.jpg",
+    Jaipur: "./images/jaipur.jpg",
+    Manali: "./images/manali.jpg",
+  };
   useEffect(() => {
     if (!searchQuery) return;
 
@@ -224,24 +231,30 @@ const TourPage = () => {
 
       {/* List of Destinations */}
       <div className="topic">
-        <h1>Places to visit..</h1>
+        <h2>Places to visit..</h2>
       </div>
       <CityGrid>
-        {cities.map((city, index) => (
-          <CityItem key={index}>
-            <div className="card-body">
-              <h5 className="card-title">{city.City}</h5>
-              <h6>Explore more</h6>
-              <FontAwesomeIcon
-                icon={faCircleChevronDown}
-                size="2x"
-                onClick={() => handleCityClick(city)}
-                style={{ cursor: 'pointer', color: '#2e582f' }}
-              />
-            </div>
-          </CityItem>
-        ))}
-      </CityGrid>
+    {cities.map((city, index) => (
+      <CityItem key={index}>
+        {/* Displaying the image dynamically based on the city name */}
+        <img
+          src={cityImages[city.City] || "./images/default.jpg"} // Default image fallback
+          alt={`${city.City} Image`}
+          style={{ width: "100%", height: "200px", objectFit: "cover", borderRadius: "15px 15px 0 0" }}
+        />
+        <div className="card-body">
+          <h5 className="card-title">{city.City}</h5>
+          <h6>Explore more</h6>
+          <FontAwesomeIcon
+            icon={faCircleChevronDown}
+            size="2x"
+            onClick={() => handleCityClick(city)}
+            style={{ cursor: 'pointer', color: '#2e582f' }}
+          />
+        </div>
+      </CityItem>
+    ))}
+</CityGrid>
 
       {/* Tour Cards Section */}
       <section className="tour-cards-section">

@@ -118,7 +118,7 @@
  
 }
 
-.topic h1 {
+.topic h2 {
   font-size: 2.5rem;
   color: #000000; /* Darker green text */
   margin: 0;
@@ -126,3 +126,11 @@
 
 }
 
+.city-item img {
+  border-radius: 15px 15px 0 0;
+  transition: transform 0.3s ease;
+}
+
+.city-item img:hover {
+  transform: scale(1.05); /* Slight zoom-in on hover */
+}
