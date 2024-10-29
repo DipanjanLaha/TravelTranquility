@@ -1,8 +1,8 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
-import LoginPage from "./pages/LoginPage";
-import SignPage from "./pages/SignPage";
+import LoginPage from "./components/LoginPage";
+import SignPage from "./components/SignPage";
 import Transport from "./components/Transport";
 import TrainDetails from "./components/TrainDetails";
 import BusDetail from "./components/BusDetail"; // Import BusDetail
