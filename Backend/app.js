@@ -4,6 +4,7 @@ const csv = require('csv-parser');
 const cors = require('cors'); // Enable CORS to allow frontend access
 const axios = require('axios');
 const cheerio = require('cheerio');
+const mongoose = require('mongoose');
 
 const app = express();
 const port = 5000;
@@ -68,6 +69,34 @@ app.get('/trains/:sourceStation/:destinationStation', async (req, res) => {
     res.status(404).send('No trains found');
   } else {
     res.json(trains);
+  }
+});
+
+// Connect to MongoDB & Getting destination places and Data
+mongoose.connect('mongodb://localhost:27017/Travel', {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+});
+
+const placeSchema = new mongoose.Schema({
+  state: String,
+  city: String,
+  ratings: Number,
+  place: String,
+  distance: String,
+  place_desc: String
+});
+
+const Place = mongoose.model('Place', placeSchema, 'Places');
+
+// Endpoint to get places by city
+app.get('/places', async (req, res) => {
+  const { city } = req.query;
+  try {
+      const places = await Place.find({ City: city });
+      res.json(places);
+  } catch (error) {
+      res.status(500).json({ message: error.message });
   }
 });
 
