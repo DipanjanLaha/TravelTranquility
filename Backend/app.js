@@ -6,10 +6,12 @@ const axios = require('axios');
 const cheerio = require('cheerio');
 const mongoose = require('mongoose');
 
+
 const app = express();
 const port = 5000;
 
 app.use(cors()); // Allow CORS
+
 
 // Function to fetch train details between two stations
 async function getTrainsBetweenStations(sourceStation, destinationStation) {
