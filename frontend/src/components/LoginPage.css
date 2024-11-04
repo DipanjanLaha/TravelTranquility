@@ -1,66 +1,78 @@
+/* Wrapper to center the login container */
 .auth-wrapper {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
   background-color: #f0f2f5;
+  background-image: 'tree.png'; /* Optional: Background Image */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
+/* Login container with shadow and rounded corners */
 .auth-container {
   width: 400px;
-  padding-right: 0px;
-  background-color: white;
+  background-color: rgba(255, 255, 255, 0.7); /* Slight transparency */
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   border-radius: 20px;
 }
 
+/* Login box styling */
 .login-box {
-  background: rgba(255, 255, 255, 0.5);
-  border-radius: 20px;
   padding: 40px;
-  width: 350px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
   text-align: center;
+  background: rgba(255, 255, 255, 0.5); /* More transparent */
+  border-radius: 20px;
 }
 
+/* Title */
 .login-box h3 {
   margin-bottom: 18px;
+  font-weight: bold;
+  color: #333;
 }
 
+/* Input fields styling */
 .login-box form input {
   width: 100%;
   padding: 12px;
   margin: 10px 0;
-  margin-right: 200px;
   border-radius: 8px;
   border: 1px solid #ccc;
-  align-items: center;
+  font-size: 16px;
 }
 
+/* Login button styling */
 .login-btn {
-  width: 25%;
-  padding: 10px 20px;
+  width: 100%; /* Full-width for better appearance */
+  padding: 12px 20px;
   background-color: #000;
   color: #fff;
   border: none;
-  border-radius: 5px;
+  border-radius: 8px;
   cursor: pointer;
   transition: background-color 0.3s;
+  font-size: 16px;
+  margin-top: 200px;
+  margin-right: 110px;
 }
 
 .login-btn:hover {
-  background-color: #009c15;
+  background-color: #009c15; /* Green hover effect */
 }
 
+/* Divider styling */
 .divider {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin: 20px 0;
-  width: 105%;
+  margin: 5px;
+  width: 100%;
 }
 
 .hr-line {
@@ -76,7 +88,7 @@
   color: #555;
 }
 
-/* Updated Social Login Styles */
+/* Social login buttons container */
 .social-login {
   display: flex;
   justify-content: center; /* Align horizontally */
@@ -84,6 +96,7 @@
   margin-top: 15px;
 }
 
+/* Social login buttons styling */
 .social-btn {
   width: 50px;
   height: 50px;
@@ -98,28 +111,36 @@
 
 .social-btn .icon {
   font-size: 20px;
+  color: white;
 }
 
+/* Individual social button colors */
 .social-btn.facebook-btn {
   background-color: #3b5998;
 }
 
 .social-btn.google-btn {
-  background-color: #db6037;
-}
-
-.social-btn:hover {
-  color: #3a3a3a61;
+  background-color: #db4437;
 }
 
 .social-btn.apple-btn {
   background-color: #000000;
-  color: white;
+}
+
+/* Social button hover effect */
+.social-btn:hover {
+  filter: brightness(85%);
+}
+
+/* Link styles for Forgot password and Sign up */
+.terms {
+  margin-top: 10px;
 }
 
 .terms a {
   text-decoration: none;
-  color: inherit;
+  color: #555;
+  font-size: 14px;
   transition: color 0.3s;
 }
 
