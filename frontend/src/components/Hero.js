@@ -14,8 +14,8 @@ const LoadingContainer = styled.div`
 `;
 
 const Video = styled.video`
-  width: 100%;
-  height: auto;
+  width: 50vw;
+  height: 50vh;
 `;
 
 // Slideshow and Home Page Styles
@@ -289,9 +289,8 @@ const App = () => {
   const chatBodyRef = useRef(null);
   const firstTimeOpenRef = useRef(true); // Track if chatbot is opened for the first time
 
-  const videoSrc = '/loading_vid.mp4';
+  const videoSrc = '/tranquility.mp4';
   const images = ['/museum.jpg', '/Czech-Fields-Houses.jpg', '/Gangtok.jpg', '/pool.jpg', '/temple.jpeg.jpg'];
-  const gifSrc = "/loading.gif"; // Path to the loading GIF
 
   useEffect(() => {
     const timer = setTimeout(() => setLoading(false), 3000);
