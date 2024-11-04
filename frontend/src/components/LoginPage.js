@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate
+import { useNavigate } from 'react-router-dom';
 import './LoginPage.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFacebookF, faApple, faGoogle } from '@fortawesome/free-brands-svg-icons';
@@ -7,7 +7,8 @@ import { faFacebookF, faApple, faGoogle } from '@fortawesome/free-brands-svg-ico
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const navigate = useNavigate(); // Initialize useNavigate
+  const [errorMessage, setErrorMessage] = useState('');
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -22,27 +23,22 @@ const Login = () => {
       const data = await response.json();
       if (response.ok) {
         console.log('Login successful', data.token);
-        // Store the token in localStorage (optional)
         localStorage.setItem('token', data.token);
-        // Redirect to the home page
-        navigate('/');
+        navigate('/'); // Redirect to the Hero page (Home)
       } else {
-        console.error(data.message);
+        setErrorMessage(data.message || 'Login failed');
       }
     } catch (error) {
-      console.error('Login error:', error);
+      setErrorMessage('An error occurred. Please try again later.');
     }
   };
 
   return (
     <div className="auth-wrapper">
       <div className="auth-container">
-
-        {/* Login Box */}
         <div className="login-box">
           <h3>Log in to your travel planner</h3>
-
-          {/* Email Login */}
+          {errorMessage && <p className="error-message">{errorMessage}</p>}
           <form onSubmit={handleSubmit}>
             <input
               type="email"
@@ -60,15 +56,11 @@ const Login = () => {
             />
             <button type="submit" className="login-btn">Log in</button>
           </form>
-
-          {/* OR Divider */}
           <div className="divider">
             <span className="hr-line"></span>
             <p className="or-text">OR</p>
             <span className="hr-line"></span>
           </div>
-
-          {/* Social Login Buttons */}
           <div className="social-login">
             <button className="social-btn facebook-btn">
               <FontAwesomeIcon icon={faFacebookF} className="icon" />
@@ -80,7 +72,6 @@ const Login = () => {
               <FontAwesomeIcon icon={faApple} className="icon" />
             </button>
           </div>
-
           <p className="terms">
             <a href="/forgot-password">Forgot password?</a>
           </p>

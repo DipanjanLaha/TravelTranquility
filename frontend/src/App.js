@@ -14,6 +14,7 @@ import ContactPage from "./pages/ConatctPage"
 import CityDetails from './components/CityDetails';
 
 
+
 function App() {
   return (
     <Router>
@@ -23,7 +24,8 @@ function App() {
         <Routes>
           {/* Route for the Home page */}
           <Route path="/" element={<Home />} />
-
+ 
+ 
           {/* Route for the Loginpage */}
           <Route path="/login" element={<LoginPage />} />
           {/* Route for the SignupPage */}
@@ -34,6 +36,7 @@ function App() {
 
           {/* Route for Train Details */}
           <Route path="/trains" element={<TrainDetails />} />  {/* Add this route */}
+
 
           <Route path="/buses" element={<BusDetail />} />
           <Route path="/flights" element={<FlightDetail />} />
