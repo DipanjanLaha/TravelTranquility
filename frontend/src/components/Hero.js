@@ -268,7 +268,7 @@ const SearchBar = () => {
 
         <PopularSearch>
           Popular Search:
-          <button onClick={() => console.log('Coorg clicked')}>Coorg</button>,
+          <button onClick={() => console.log('Munnar clicked')}>Munnar</button>,
           <button onClick={() => console.log('Goa clicked')}>Goa</button>,
           <button onClick={() => console.log('Manali clicked')}>Manali</button>,
           <button onClick={() => console.log('Varanasi clicked')}>Varanasi</button>

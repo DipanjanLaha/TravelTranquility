@@ -4,38 +4,34 @@ import { Link } from 'react-router-dom';
 
 // Styled Components
 const HeaderContainer = styled.header`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 20px;
-  background-color: transparent; /* Set background color to transparent */
+  display: none; /* Hide the header container */
 `;
 
-
-
-const Logo = styled.div`
+const FloatingContainer1 = styled.div`
+  position: fixed;
+  top: 25px;
+  height: 86px;
+  left: 600px;
   display: flex;
-  align-items: center;
-  font-size: 1.8rem;
-  font-weight: bold;
-  color: #7aab35;
-  cursor: pointer;
+  gap: 20px;
+  z-index: 1000;
+  background-color: white;
+  border-radius: 50px;
+`;
 
-  img {
-    height: 40px;
-    margin-right: 10px;
-  }
-
-  span {
-    color: #2e582f;
-    font-size: 2rem;
-  }
+const FloatingContainer2 = styled.div`
+  position: fixed;
+  top: 40px;
+  left: 1450px;
+  display: flex;
+  z-index: 1000;
 `;
 
 const NavLinks = styled.ul`
   list-style-type: none;
   display: flex;
-  gap: 40px;
+  gap: 30px;
+  padding: 15px;
 
   li {
     font-size: 18px;
@@ -64,7 +60,7 @@ const LoginButton = styled(Link)`
   color: #7aab35;
   border: none;
   padding: 15px 20px;
-  border-radius: 5px;
+  border-radius: 50px;
   font-weight: bold;
   cursor: pointer;
   text-decoration: none;
@@ -79,24 +75,23 @@ const LoginButton = styled(Link)`
 
 // Header Component
 const Header = () => {
-
   return (
-    <HeaderContainer>
-      <Logo>
-        <img src="/destination.png" alt="Travel Tranquility Logo" />
-        <span>TRANQUILITY</span>
-      </Logo>
+    <>
+      <HeaderContainer />
+      <FloatingContainer1>
 
-      <NavLinks>
-      <li><Link to="/">Home</Link></li>
-        <li><Link to="/Destination">Destinations</Link></li>
-        <li><Link to="/Feedback">Feedbacks</Link></li>
-        <li><Link to="/Blog">Blog</Link></li>
-        <li><Link to="/Contact">Contact</Link></li>
-      </NavLinks>
-
-      <LoginButton to="/login">Login / Signup</LoginButton>
-    </HeaderContainer>
+        <NavLinks>
+          <li><Link to="/">Home</Link></li>
+          <li><Link to="/Destination">Destinations</Link></li>
+          <li><Link to="/Feedback">Feedbacks</Link></li>
+          <li><Link to="/Blog">Blog</Link></li>
+          <li><Link to="/Contact">Contact</Link></li>
+        </NavLinks>
+      </FloatingContainer1>
+      <FloatingContainer2>
+        <LoginButton to="/login">Login / Signup</LoginButton>
+      </FloatingContainer2>
+    </>
   );
 };
 
