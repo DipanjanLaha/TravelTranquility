@@ -5,7 +5,7 @@
   align-items: center;
   height: 100vh;
   background-color: #f0f2f5;
-  background-image: 'tree.png'; /* Optional: Background Image */
+  background-image: url('/public/tree.png'); /* Optional: Background Image */
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -14,27 +14,29 @@
 /* Login container with shadow and rounded corners */
 .auth-container {
   width: 400px;
-  background-color: rgba(255, 255, 255, 0.7); /* Slight transparency */
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  background-color: rgba(255, 255, 255, 0.604); /* Slight transparency */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
   border-radius: 20px;
+  padding: 20px;
 }
 
 /* Login box styling */
 .login-box {
-  padding: 40px;
+  padding: 20px;
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
-  background: rgba(255, 255, 255, 0.5); /* More transparent */
-  border-radius: 20px;
+  border-radius: 15px;
 }
 
 /* Title */
 .login-box h3 {
-  margin-bottom: 18px;
+  margin-bottom: 24px;
   font-weight: bold;
   color: #333;
+  font-size: 24px;
 }
 
 /* Input fields styling */
@@ -42,28 +44,38 @@
   width: 100%;
   padding: 12px;
   margin: 10px 0;
-  border-radius: 8px;
+  border-radius: 10px;
   border: 1px solid #ccc;
   font-size: 16px;
+  box-sizing: border-box;
+}
+
+/* Login form styling */
+.login-box form {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Centers form elements horizontally */
+  width: 100%;
 }
 
 /* Login button styling */
 .login-btn {
-  width: 100%; /* Full-width for better appearance */
+  width: 80%; /* Adjusts width of the button */
   padding: 12px 20px;
-  background-color: #000;
+  background-color: #006400; /* Dark green for contrast */
   color: #fff;
   border: none;
-  border-radius: 8px;
+  border-radius: 10px;
   cursor: pointer;
-  transition: background-color 0.3s;
+  transition: background-color 0.3s ease;
   font-size: 16px;
-  margin-top: 200px;
-  margin-right: 110px;
+  margin-top: 20px; /* Adds space above the button */
 }
 
+
+
 .login-btn:hover {
-  background-color: #009c15; /* Green hover effect */
+  background-color: #008f1d; /* Green hover effect */
 }
 
 /* Divider styling */
@@ -71,14 +83,14 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin: 5px;
+  margin: 20px 0;
   width: 100%;
 }
 
 .hr-line {
   height: 1px;
   flex: 1;
-  background-color: #000;
+  background-color: #b0abab;
   margin: 0 10px;
 }
 
@@ -91,8 +103,8 @@
 /* Social login buttons container */
 .social-login {
   display: flex;
-  justify-content: center; /* Align horizontally */
-  gap: 15px; /* Space between buttons */
+  justify-content: center;
+  gap: 15px;
   margin-top: 15px;
 }
 
@@ -104,9 +116,13 @@
   align-items: center;
   justify-content: center;
   border: none;
-  border-radius: 50%; 
+  border-radius: 50%;
   cursor: pointer;
-  transition: background-color 0.3s;
+  transition: transform 0.2s ease;
+}
+
+.social-btn:hover {
+  transform: scale(1.1);
 }
 
 .social-btn .icon {
@@ -124,26 +140,29 @@
 }
 
 .social-btn.apple-btn {
-  background-color: #000000;
-}
-
-/* Social button hover effect */
-.social-btn:hover {
-  filter: brightness(85%);
+  background-color: #000;
 }
 
 /* Link styles for Forgot password and Sign up */
 .terms {
-  margin-top: 10px;
+  margin-top: 15px;
+  text-align: center;
 }
 
 .terms a {
   text-decoration: none;
   color: #555;
   font-size: 14px;
-  transition: color 0.3s;
+  transition: color 0.3s ease;
 }
 
 .terms a:hover {
-  color: rgb(0, 17, 255);
+  color: #0000ff; /* Bright blue hover */
+}
+
+/* Error message styling */
+.error-message {
+  color: red;
+  font-size: 14px;
+  margin-top: 10px;
 }

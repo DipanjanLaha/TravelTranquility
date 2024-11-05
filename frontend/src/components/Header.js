@@ -12,8 +12,9 @@ const HeaderContainer = styled.header`
 
 const FloatingContainer1 = styled.div`
   position: fixed;
-  top: 25px;
-  height: 86px;
+  top: 45px;
+  height: 60px;
+  width: 550px;
   left: 600px;
   display: flex;
   gap: 20px;
@@ -33,7 +34,8 @@ const FloatingContainer2 = styled.div`
 const NavLinks = styled.ul`
   list-style-type: none;
   display: flex;
-  gap: 30px;
+  gap: 42px;
+  margin-top:2px;
   padding: 15px;
 
   li {

@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import Message from './Message';
 import { MdClose } from 'react-icons/md';
 
+
 // Loading Page (Splash Screen) Styles
 const LoadingContainer = styled.div`
   display: flex;
@@ -42,8 +43,8 @@ const SlideshowImage = styled.img`
 
 // Chatbot GIF Styles
 const ChatbotGif = styled.img`
-  width: 50px;
-  height: 50px;
+  width: 80px;
+  height: 80px;
   position: fixed;
   bottom: 20px;
   left: 20px;
@@ -213,10 +214,7 @@ const PopularSearch = styled.div`
     font-weight: bold;
     cursor: pointer;
 
-    &:hover {
-      text-decoration: none;
-      color: #2e582f;
-    }
+    
   }
 `;
 
@@ -224,10 +222,31 @@ const SearchBar = () => {
   const [searchInput, setSearchInput] = useState('');
   const [searchInputFrom, setSearchInputFrom] = useState('');
   const navigate = useNavigate();
+  const [travelDate, setTravelDate] = useState(''); // State for storing date
+
 
   const handleSearchClick = () => {
     navigate('/transport', { state: { searchQuery: searchInput, fromWhere: searchInputFrom } });
+    console.log("Travel Date:", travelDate); 
+    navigate('/transport', { state: {
+        searchQuery: searchInput,
+        fromWhere: searchInputFrom,
+        travelDate: travelDate, // Pass travel date along with other values
+      },
+    });
+
+ 
+   
+    navigate('/transport', {
+      state: {
+        searchQuery: searchInput,
+        fromWhere: searchInputFrom,
+        travelDate: travelDate, // Pass travel date along with other values
+      },
+    });
   };
+  
+  
 
   return (
     <SearchBarWrapper>
@@ -255,7 +274,11 @@ const SearchBar = () => {
 
           <InputContainer>
             <InputLabel>Date</InputLabel>
-            <InputField type="date" />
+            <InputField
+              type="date"
+              value={travelDate}
+              onChange={(e) => setTravelDate(e.target.value)} // Update state on date change
+            />
           </InputContainer>
 
           <InputContainer>
@@ -264,7 +287,7 @@ const SearchBar = () => {
           </InputContainer>
 
           <ExploreButton onClick={handleSearchClick}>Explore Now</ExploreButton>
-        </SearchBarContainer>
+          </SearchBarContainer>
 
         <PopularSearch>
           Popular Search:
@@ -397,7 +420,7 @@ const App = () => {
       <SearchBar />
 
       <ChatbotGif
-        src="/chatbot.png" // Update with your GIF path
+        src="/bot.png" // Update with your GIF path
         alt="Chatbot"
         onClick={toggleChatbot}
       />

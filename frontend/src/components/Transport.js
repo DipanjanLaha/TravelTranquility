@@ -1,12 +1,13 @@
 import React from "react";
 import "./Transport.css"; // CSS for styling both Header and TourCards
 import styled from 'styled-components';
-import { Link, useNavigate, useLocation } from "react-router-dom";
+import {  useNavigate, useLocation } from "react-router-dom";
 import axios from 'axios';
 import { useState, useEffect } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCaretRight } from '@fortawesome/free-solid-svg-icons';
 import { faCircleChevronDown } from '@fortawesome/free-solid-svg-icons';
+
 // Station codes mapping
 const stationCode = new Map([
   ["ladakh", "NDLS"],
@@ -118,22 +119,11 @@ const CityItem = styled.div`
 
 // Array of tours
 const tours = [
-  {
-    title: "Train",
-    image: "./train.jpg",
-    route: "/trains",
-  },
-  {
-    title: "Road",
-    image: "./road.jpg",
-    route: "/buses",
-  },
-  {
-    title: "Flight",
-    image: "./flightt.jpg",
-    route: "/flights",
-  },
+  { title: "Train", image: "./train.jpg", route: "/trains" },
+  { title: "Road", image: "./road.jpg", route: "/buses" },
+  { title: "Flight", image: "./flightt.jpg", route: "/flights" },
 ];
+
 
 // Main component that combines the Header and TourCards
 const TourPage = () => {
@@ -146,14 +136,7 @@ const TourPage = () => {
 
   const srcCode = stationCode.get(`${searchQuery}`); // getting SRC station code from map
   const destCode = stationCode.get(`${fromWhere}`); // getting DEST station code from map
-  // Mapping city names to their respective images
-  const cityImages = {
-    Ladakh: "./images/ladakh.jpg",
-    Kolkata: "./images/kolkata.jpg",
-    Delhi: "./images/delhi.jpg",
-    Jaipur: "./images/jaipur.jpg",
-    Manali: "./images/manali.jpg",
-  };
+
   useEffect(() => {
     if (!searchQuery) return;
 
@@ -196,31 +179,23 @@ const TourPage = () => {
 
   return (
     <div className="tour-page-container">
-      {/* Logo Section */}
-      <div className="logo-container">
-        <Link to="/">
-          <img src="/destination.png" alt="Travel Tranquility Logo" className="logo" />
-        </Link>
-        <span className="logo-text">TRANQUILITY</span>
-      </div>
-
       {/* Header Section */}
       <section className="header-section">
         <h1>Top values for you</h1>
         <p>Try a variety of benefits when using our services</p>
         <div className="features">
           <div className="feature-item">
-            <img src="./bookk.gif" alt="Easy Booking" />
+            <img src="./booking.gif" alt="Easy Booking" />
             <h3>Easy booking</h3>
             <p>Quick and easy booking for upcoming dates</p>
           </div>
           <div className="feature-item">
-            <img src="./guide.gif" alt="Digital Tour Guide" />
+            <img src="./guide1.gif" alt="Digital Tour Guide" />
             <h3>Digital tour guide</h3>
             <p>Our digital tour guide is ready to guide your trip</p>
           </div>
           <div className="feature-item">
-            <img src="./prom.gif" alt="Lots of Promos" />
+            <img src="./promo.gif" alt="Lots of Promos" />
             <h3>Lots of promos</h3>
             <p>Various promotions and drawings of tours</p>
           </div>
@@ -231,30 +206,34 @@ const TourPage = () => {
 
       {/* List of Destinations */}
       <div className="topic">
-        <h2>Places to visit..</h2>
+        <h1>Places to visit..</h1>
       </div>
       <CityGrid>
-    {cities.map((city, index) => (
-      <CityItem key={index}>
-        {/* Displaying the image dynamically based on the city name */}
+  {cities.map((city, index) => (
+    <CityItem key={index}>
+      <div className="card-body">
+        {/* Log the image URL */}
+        {console.log(`Image URL: http://localhost:5000/uploads/${city.imageUrl}`)}
         <img
-          src={cityImages[city.City] || "./images/default.jpg"} // Default image fallback
-          alt={`${city.City} Image`}
-          style={{ width: "100%", height: "200px", objectFit: "cover", borderRadius: "15px 15px 0 0" }}
+          src={`http://localhost:5000/uploads/${city.imageUrl}`}
+          alt={city.City}
+          className="city-image"
+          style={{ width: '100%', height: '200px', objectFit: 'cover' }}
         />
-        <div className="card-body">
-          <h5 className="card-title">{city.City}</h5>
-          <h6>Explore more</h6>
-          <FontAwesomeIcon
-            icon={faCircleChevronDown}
-            size="2x"
-            onClick={() => handleCityClick(city)}
-            style={{ cursor: 'pointer', color: '#2e582f' }}
-          />
-        </div>
-      </CityItem>
-    ))}
+        <h5 className="card-title">{city.City}</h5>
+        <p className="card-text">Explore the best places in {city.City}!</p>
+        <button
+          className="btn btn-primary"
+          onClick={() => handleCityClick(city)}
+        >
+          Explore More
+        </button>
+      </div>
+    </CityItem>
+  ))}
 </CityGrid>
+
+
 
       {/* Tour Cards Section */}
       <section className="tour-cards-section">
