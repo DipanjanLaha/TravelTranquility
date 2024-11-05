@@ -151,9 +151,8 @@
 
 .terms a {
   text-decoration: none;
-  color: #555;
+  color: #000000;
   font-size: 14px;
-  transition: color 0.3s ease;
 }
 
 .terms a:hover {

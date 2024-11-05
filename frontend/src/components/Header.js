@@ -4,7 +4,10 @@ import { Link } from 'react-router-dom';
 
 // Styled Components
 const HeaderContainer = styled.header`
-  display: none; /* Hide the header container */
+  display: none;
+  justify-content: space-between;
+  align-items: center;
+  background-color: transparent; /* Set background color to transparent */
 `;
 
 const FloatingContainer1 = styled.div`
