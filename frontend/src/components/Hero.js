@@ -313,7 +313,7 @@ const App = () => {
   const firstTimeOpenRef = useRef(true); // Track if chatbot is opened for the first time
 
   const videoSrc = '/tranquility.mp4';
-  const images = ['/museum.jpg', '/Czech-Fields-Houses.jpg', '/Gangtok.jpg', '/pool.jpg', '/temple.jpeg.jpg'];
+  const images = ['/g.jpg', '/Czech-Fields-Houses.jpg', '/Gangtok.jpg', '/pool.jpg', '/temple.jpeg.jpg'];
 
   useEffect(() => {
     const timer = setTimeout(() => setLoading(false), 3000);

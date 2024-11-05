@@ -14,9 +14,7 @@ const FloatingContainer1 = styled.div`
   width: 550px;
   left: 600px;
   display: flex;
-  gap: 20px;
   z-index: 1000;
-  background-color: white;
   border-radius: 50px;
 `;
 
@@ -31,7 +29,7 @@ const FloatingContainer2 = styled.div`
 const NavLinks = styled.ul`
   list-style-type: none;
   display: flex;
-  gap: 42px;
+  gap: 80px;
   margin-top:2px;
   padding: 15px;
 
