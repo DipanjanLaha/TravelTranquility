@@ -7,6 +7,7 @@ import { useState, useEffect } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCaretRight } from '@fortawesome/free-solid-svg-icons';
 import { faCircleChevronDown } from '@fortawesome/free-solid-svg-icons';
+import { Modal, Button } from 'react-bootstrap';
 
 // Station codes mapping
 const stationCode = new Map([
@@ -133,6 +134,8 @@ const TourPage = () => {
   const [error, setError] = useState('');
   const [trains, setTrains] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [selectedCities, setSelectedCities] = useState([]); // New state for itinerary
+  const [showModal, setShowModal] = useState(false); // Modal visibility state
 
   const srcCode = stationCode.get(`${searchQuery}`); // getting SRC station code from map
   const destCode = stationCode.get(`${fromWhere}`); // getting DEST station code from map
@@ -176,6 +179,22 @@ const TourPage = () => {
   const handleTourClick = (route) => {
     navigate(route); // Navigates to the respective tour route (train, bus, flight)
   };
+
+  const handleAddToItinerary = (city) => {
+    if (!selectedCities.includes(city)) {
+      setSelectedCities([...selectedCities, city]);
+    }
+  };
+
+  const handleGenerateItinerary = () => {
+    if (selectedCities.length === 0) {
+      alert("Please add places to the itinerary.");
+    } else {
+      setShowModal(true); // Show the modal
+    }
+  };
+
+  const handleCloseModal = () => setShowModal(false);
 
   return (
     <div className="tour-page-container">
@@ -228,11 +247,22 @@ const TourPage = () => {
         >
           Explore More
         </button>
+        <button
+          className="btn btn-primary"
+          onClick={() => handleAddToItinerary(city)}
+        >
+          Add To Itenary
+        </button>
       </div>
     </CityItem>
   ))}
 </CityGrid>
 
+<div className="mt-4 text-center">
+        <button className="btn btn-success" onClick={handleGenerateItinerary}>
+          Generate Itinerary
+        </button>
+      </div>
 
 
       {/* Tour Cards Section */}
@@ -250,6 +280,27 @@ const TourPage = () => {
           ))}
         </div>
       </section>
+
+      {/* Bootstrap Modal for Itinerary */}
+      <Modal show={showModal} onHide={handleCloseModal}>
+        <Modal.Header closeButton>
+          <Modal.Title>Your Itinerary</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <ul className="list-group">
+            {selectedCities.map((city, index) => (
+              <li key={index} className="list-group-item">
+                {city.City}
+              </li>
+            ))}
+          </ul>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleCloseModal}>
+            Close
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </div>
   );
 };
