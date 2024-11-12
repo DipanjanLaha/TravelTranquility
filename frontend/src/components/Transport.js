@@ -9,11 +9,6 @@ import { faCaretRight } from '@fortawesome/free-solid-svg-icons';
 import { faCircleChevronDown } from '@fortawesome/free-solid-svg-icons';
 import { Modal, Button } from 'react-bootstrap';
 
-// Station codes mapping
-const stationCode = new Map([
-  ["ladakh", "NDLS"],
-  ["kolkata", "HWH"]
-]);
 
 // Styled components for CityGrid and CityItem
 const CityGrid = styled.div`
@@ -137,8 +132,6 @@ const TourPage = () => {
   const [selectedCities, setSelectedCities] = useState([]); // New state for itinerary
   const [showModal, setShowModal] = useState(false); // Modal visibility state
 
-  const srcCode = stationCode.get(`${searchQuery}`); // getting SRC station code from map
-  const destCode = stationCode.get(`${fromWhere}`); // getting DEST station code from map
 
   useEffect(() => {
     if (!searchQuery) return;
@@ -156,17 +149,17 @@ const TourPage = () => {
   }, [searchQuery]);
 
   useEffect(() => {
-    if (!srcCode || !destCode) return;
+    if (!fromWhere || !searchQuery) return;
 
     // Fetch train data from API
-    axios.get(`http://localhost:5000/trains/${srcCode}/${destCode}`)
+    axios.get(`http://localhost:5000/trains/${fromWhere}/${searchQuery}`)
       .then(response => {
         setTrains(response.data);
       })
       .catch(error => {
         console.error("Error fetching the train data:", error);
       });
-  }, [srcCode, destCode]);
+  }, []);
 
   const navigate = useNavigate();
 
