@@ -1,12 +1,10 @@
-import React from "react";
-import "./Transport.css"; // CSS for styling both Header and TourCards
+import React, { useState, useEffect } from "react";
+import "./Transport.css";
 import styled from 'styled-components';
-import {  useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import axios from 'axios';
-import { useState, useEffect } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCaretRight } from '@fortawesome/free-solid-svg-icons';
-import { faCircleChevronDown } from '@fortawesome/free-solid-svg-icons';
 
 // Station codes mapping
 const stationCode = new Map([
@@ -38,12 +36,11 @@ const CityItem = styled.div`
   text-align: center;
 
   &:hover {
-    animation: bounceToTop 0.6s ease forwards; /* Apply bounce animation */
+    animation: bounceToTop 0.6s ease forwards;
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
     background-color: #f0f8ff;
     color: #1d4f91;
 
-    /* Update the child elements when parent is hovered */
     .card-title {
       color: #1d4f91;
     }
@@ -57,7 +54,6 @@ const CityItem = styled.div`
     }
   }
 
-  /* Keyframes for bounce animation */
   @keyframes bounceToTop {
     0% {
       transform: translateY(0);
@@ -69,7 +65,7 @@ const CityItem = styled.div`
       transform: translateY(0);
     }
     100% {
-      transform: translateY(-5px); /* Subtle final bounce position */
+      transform: translateY(-5px);
     }
   }
 
@@ -112,7 +108,7 @@ const CityItem = styled.div`
 
     &:hover {
       background-color: #0056b3;
-      transform: translateY(-3px); /* Slight button lift on hover */
+      transform: translateY(-3px);
     }
   }
 `;
@@ -124,18 +120,19 @@ const tours = [
   { title: "Flight", image: "./flightt.jpg", route: "/flights" },
 ];
 
-
 // Main component that combines the Header and TourCards
 const TourPage = () => {
   const location = useLocation();
   const [cities, setCities] = useState([]);
-  const { searchQuery, fromWhere } = location.state || {}; // searchQuery->TO || fromWhere->FROM
+  const { searchQuery, fromWhere, travelDate } = location.state || {};
   const [error, setError] = useState('');
   const [trains, setTrains] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [selectedCity, setSelectedCity] = useState(null);
+  const [cityImageUrl, setCityImageUrl] = useState(null);
 
-  const srcCode = stationCode.get(`${searchQuery}`); // getting SRC station code from map
-  const destCode = stationCode.get(`${fromWhere}`); // getting DEST station code from map
+  const srcCode = stationCode.get(`${searchQuery}`);
+  const destCode = stationCode.get(`${fromWhere}`);
 
   useEffect(() => {
     if (!searchQuery) return;
@@ -165,16 +162,18 @@ const TourPage = () => {
       });
   }, [srcCode, destCode]);
 
-  const navigate = useNavigate();
 
   // Function to handle city details navigation
+  const navigate = useNavigate();
+
   const handleCityClick = (city) => {
-    navigate(`/city-details/${city.City}`, { state: { cityData: city } });
+    setSelectedCity(city.name);
+    setCityImageUrl(city.imageUrl);
+    navigate(`/city-details/${city.name}`, { state: { cityData: city } });
   };
 
-  // Function to handle tour navigation
   const handleTourClick = (route) => {
-    navigate(route); // Navigates to the respective tour route (train, bus, flight)
+    navigate(route);
   };
 
   return (
@@ -209,31 +208,26 @@ const TourPage = () => {
         <h1>Places to visit..</h1>
       </div>
       <CityGrid>
-  {cities.map((city, index) => (
-    <CityItem key={index}>
-      <div className="card-body">
-        {/* Log the image URL */}
-        {console.log(`Image URL: http://localhost:5000/uploads/${city.imageUrl}`)}
-        <img
-          src={`http://localhost:5000/uploads/${city.imageUrl}`}
-          alt={city.City}
-          className="city-image"
-          style={{ width: '100%', height: '200px', objectFit: 'cover' }}
-        />
-        <h5 className="card-title">{city.City}</h5>
-        <p className="card-text">Explore the best places in {city.City}!</p>
-        <button
-          className="btn btn-primary"
-          onClick={() => handleCityClick(city)}
-        >
-          Explore More
-        </button>
-      </div>
-    </CityItem>
-  ))}
-</CityGrid>
-
-
+        {cities.map((city, index) => (
+          <CityItem key={index}>
+            <div className="card-body">
+              <img
+                src={`http://localhost:5000${city.imageUrl}`} alt={city.cityName} // Use the provided image URL
+                className="city-image"
+                style={{ width: '100%', height: '200px', objectFit: 'cover' }}
+              />
+              <h5 className="card-title">{city.name}</h5>
+              <p className="card-text">Explore the best places in {city.name}!</p>
+              <button
+                className="btn btn-primary"
+                onClick={() => handleCityClick(city)}
+              >
+                Explore More
+              </button>
+            </div>
+          </CityItem>
+        ))}
+      </CityGrid>
 
       {/* Tour Cards Section */}
       <section className="tour-cards-section">
@@ -244,12 +238,20 @@ const TourPage = () => {
               <img src={tour.image} alt={tour.title} className="tour-image" />
               <h3>{tour.title}</h3>
               <button className="arrow-button" onClick={() => handleTourClick(tour.route)}>
-              <FontAwesomeIcon icon={faCaretRight} size="2x" />              
+                <FontAwesomeIcon icon={faCaretRight} size="2x" />
               </button>
             </div>
           ))}
         </div>
       </section>
+
+      {/* Selected City Image */}
+      {selectedCity && cityImageUrl && (
+        <div style={{ marginTop: '20px' }}>
+          <h2>{selectedCity}</h2>
+          <img src={`http://localhost:5000${cityImageUrl}`} alt={selectedCity} style={{ width: '300px', height: 'auto' }} />
+        </div>
+      )}
     </div>
   );
 };
