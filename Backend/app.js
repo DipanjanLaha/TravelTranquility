@@ -141,7 +141,7 @@ loadCities();
 
 let stationData = []; //array to store station codes of the below function
 
-// Load CSV data once and store it in a dictionary
+// Load staion list CSV data once and store it in a dictionary
 function loadStationData(csvFilePath) {
     return new Promise((resolve, reject) => {
         fs.createReadStream(csvFilePath)
@@ -162,7 +162,7 @@ function getStationCode(stationName) {
 }
 
 // Call the function to load station codes
-loadStationData('Station_list.csv')
+loadStationData('stations_list.csv')
     .then(() => {
         // Now you can use getStationCode without reloading the CSV each time
         console.log(getStationCode('Barddhaman')); // Example usage
