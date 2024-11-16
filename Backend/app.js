@@ -5,12 +5,17 @@ const cors = require('cors'); // Enable CORS to allow frontend access
 const axios = require('axios');
 const cheerio = require('cheerio');
 const mongoose = require('mongoose');
+const { Console } = require('console');
 
 
 const app = express();
 const port = 5000;
 
 app.use(cors()); // Allow CORS
+
+
+// Serve the images from the public directory
+app.use('/uploads', express.static('uploads'));
 
 
 // Function to fetch train details between two stations
@@ -116,7 +121,7 @@ app.get('/api/csv-data', (req, res) => {
     });
 });
 
-let cities = [];
+let cities = [];// array to store locations data for the below function
 
 // Function to load CSV file
 function loadCities() {
@@ -132,6 +137,38 @@ function loadCities() {
 
 // Call the function to load cities data when the server starts
 loadCities();
+
+
+let stationData = []; //array to store station codes of the below function
+
+// Load staion list CSV data once and store it in a dictionary
+function loadStationData(csvFilePath) {
+    return new Promise((resolve, reject) => {
+        fs.createReadStream(csvFilePath)
+            .pipe(csv())
+            .on('data', (row) => {
+                // Store station code using station name in lowercase as the key
+                stationData[row['station name'].toLowerCase()] = row['station code'];
+            })
+            .on('end', () => {resolve(), console.log("Station Code Parsed")})
+            .on('error', (error) => reject(error));
+    });
+}
+
+// Function to get station code from the preloaded data
+function getStationCode(stationName) {
+    const code = stationData[stationName.toLowerCase()];
+    return code ? code : 'Station not found';
+}
+
+// Call the function to load station codes
+loadStationData('stations_list.csv')
+    .then(() => {
+        // Now you can use getStationCode without reloading the CSV each time
+        console.log(getStationCode('Barddhaman')); // Example usage
+    })
+    .catch((error) => console.error('Error loading station data:', error));
+
 
 // Define the route to search cities by state
 app.get('/cities', (req, res) => {
