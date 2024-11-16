@@ -165,10 +165,35 @@ function getStationCode(stationName) {
 loadStationData('stations_list.csv')
     .then(() => {
         // Now you can use getStationCode without reloading the CSV each time
-        console.log(getStationCode('Barddhaman')); // Example usage
+        console.log(getStationCode('Lottegollahalli')); // Example usage
     })
     .catch((error) => console.error('Error loading station data:', error));
 
+
+// FTECHING SUGGESTIONS FOR SEARCH BOX COMPONENT    
+let suggests = []
+
+fs.createReadStream('suggestions.csv')
+    .pipe(csv())
+    .on('data', (row) => {
+      if (row.suggests) {
+        suggests.push(row.suggests);
+      }
+    })
+    .on('end', () => { /* CSV file processed */ });
+
+app.get('/suggestions', (req, res) => {
+  const query = req.query.q?.toLowerCase() || '';
+  
+  if (!query) {
+    return res.json([]);
+  }
+  const suggestions = suggests
+    .filter(place => place.toLowerCase().includes(query))
+    .slice(0, 10); // Limit to 10 suggestions
+
+  res.json(suggestions);
+});
 
 // Define the route to search cities by state
 app.get('/cities', (req, res) => {
