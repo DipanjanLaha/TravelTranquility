@@ -223,20 +223,22 @@ const SearchBar = () => {
   const [searchInputFrom, setSearchInputFrom] = useState('');
   const navigate = useNavigate();
   const [travelDate, setTravelDate] = useState(''); // State for storing date
-
+  const [suggestions, setSuggestions] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const handleSearchClick = () => {
     navigate('/transport', { state: { searchQuery: searchInput, fromWhere: searchInputFrom } });
-    console.log("Travel Date:", travelDate); 
-    navigate('/transport', { state: {
+    console.log("Travel Date:", travelDate);
+    navigate('/transport', {
+      state: {
         searchQuery: searchInput,
         fromWhere: searchInputFrom,
         travelDate: travelDate, // Pass travel date along with other values
       },
     });
 
- 
-   
+
+
     navigate('/transport', {
       state: {
         searchQuery: searchInput,
@@ -245,8 +247,32 @@ const SearchBar = () => {
       },
     });
   };
-  
-  
+
+  useEffect(() => {
+    const fetchSuggestions = async () => {
+      if (!searchInput.trim()) {
+        setSuggestions([]);
+        return;
+      }
+
+      setLoading(true);
+      try {
+        const response = await fetch(`http://localhost:5000/suggestions?q=${encodeURIComponent(searchInput)}`);
+        const data = await response.json();
+        setSuggestions(data);
+      } catch (error) {
+        console.error('Error fetching suggestions:', error);
+        setSuggestions([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    // Debounce the API calls
+    const timeoutId = setTimeout(fetchSuggestions, 300);
+    return () => clearTimeout(timeoutId);
+  }, [searchInput]);
+
 
   return (
     <SearchBarWrapper>
@@ -260,6 +286,24 @@ const SearchBar = () => {
               onChange={(e) => setSearchInput(e.target.value)}
               placeholder="Enter your destination"
             />
+
+            {/* Suggestions Dropdown */}
+            {suggestions.length > 0 && (
+              <div className="absolute w-full mt-1 bg-white border rounded-lg shadow-lg max-h-60 overflow-auto">
+                {suggestions.map((suggestion, index) => (
+                  <button
+                    key={index}
+                    onClick={() => {
+                      setSearchInput(suggestion);
+                      setSuggestions([]);
+                    }}
+                    className="w-full px-4 py-2 text-left hover:bg-gray-100 focus:outline-none focus:bg-gray-100"
+                  >
+                    {suggestion}
+                  </button>
+                ))}
+              </div>
+            )}
           </InputContainer>
 
           <InputContainer>
@@ -287,7 +331,7 @@ const SearchBar = () => {
           </InputContainer>
 
           <ExploreButton onClick={handleSearchClick}>Explore Now</ExploreButton>
-          </SearchBarContainer>
+        </SearchBarContainer>
 
         <PopularSearch>
           Popular Search:
@@ -323,7 +367,7 @@ const App = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentImageIndex((prevIndex) => (prevIndex + 1) %
- images.length);
+        images.length);
     }, 5000);
     return () => clearInterval(interval);
   }, [images.length]);

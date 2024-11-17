@@ -158,7 +158,7 @@ const TourPage = () => {
       .catch(error => {
         console.error("Error fetching the train data:", error);
       });
-  }, []);
+  }, [fromWhere,searchQuery]);
 
   const navigate = useNavigate();
 
