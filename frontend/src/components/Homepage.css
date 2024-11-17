@@ -1,0 +1,223 @@
+/* Global Reset */
+html, body, #root {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+/* Main Application Container */
+.app {
+    position: relative;
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    transition: background-image 1s ease-in-out;
+}
+
+/* Transparent Content Container */
+.transparent-container {
+    position: relative;
+    background: rgba(255, 255, 255, 0.3); /* Semi-transparent background */
+    width: 80%;
+    max-width: 1200px;
+    height: 600px;
+    padding: 20px;
+    border-radius: 30px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    border: 2px solid rgba(255, 255, 255, 0.5); /* Semi-transparent border */
+}
+
+/* Navbar */
+.navbar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 6px 0;
+}
+
+.navbar-search {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+} 
+
+.transparent-containers {
+    display: flex;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.6); /* Slightly transparent */
+    padding: 10px 20px;
+    border-radius: 28px;
+    width: 100%;
+    height: 35px;
+    justify-content: space-between;
+}
+
+.navbar-links {
+    list-style: none;
+    display: flex;
+    gap: 90px;
+    margin: 2px;
+    padding: 2px;
+}
+
+.navbar-links li {
+    list-style-type: none;
+    display: inline-block;
+    margin: 0 20px;
+    padding: 10px;
+    font-size: 18px;
+    font-weight: bold;
+    color: #000000; /* Replace with your desired color */
+    text-decoration: none; /* Remove underline */
+    cursor: pointer;
+    position: relative;
+    transition: color 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+
+.navbar-links li:hover {
+    color: #7bd971; /* Change text color on hover */
+    transform: translateY(-2px); /* Optional hover effect */
+}
+
+/* Ensure anchor tags inside li also have no underline */
+.navbar-links li a {
+    text-decoration: none; /* Remove underline for links */
+    color: inherit; /* Inherit the text color from li */
+}
+/* Add the underline effect */
+.navbar-links li::after {
+    content: '';
+    position: absolute;
+    left: 50%; /* Start the underline in the center */
+    bottom: -5px; /* Adjust space below the text */
+    width: 0; /* Initially no underline */
+    height: 2px;
+    background-color: #7aab35; /* Underline color */
+    transition: width 0.3s ease, left 0.3s ease; /* Smooth animation for underline */
+}
+
+/* On click, expand underline to 50% */
+.navbar-links li:active::after {
+    width: 50%; /* Expand to 50% of the text width */
+    left: 25%; /* Adjust position to keep it centered */
+}
+
+
+
+/* Search Bar */
+.search-bar-wrapper {
+    display: flex;
+    justify-content: center;
+    margin-top: 70px;
+}
+
+.search-bar-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.8); /* Slightly transparent background */
+    padding: 20px;
+    border-radius: 35px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 90%;
+    max-width: 1000px;
+    height: 80px;
+}
+
+.input-container {
+    display: flex;
+    flex-direction: column;
+    margin: 5px;
+}
+
+.input-label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #333;
+    font-size: 18px;
+    border-radius: 5px;
+}
+
+.input-field {
+    padding: 4px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 18px;
+}
+
+/* Explore Button */
+.explore-button {
+    padding: 10px 20px;
+    background-color: #20671c; /* Primary color */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-top: 20px;
+}
+
+.explore-button:hover {
+    background-color: #0d8661; /* Darker shade on hover */
+}
+
+/* Explore Headings */
+.explore-heading {
+    text-align: center;
+    font-size: 3rem;
+    font-weight: bold;
+    color: #ffffff;
+    margin-top: 40px;
+    margin-bottom: 20px;
+    line-height: 1.2;
+}
+
+.explore-subheading {
+    display: block;
+    font-size: 3rem;
+    font-weight: bold;
+    color: #ffffff;
+}
+
+.explore-subheadings {
+    display: block;
+    font-size: 0.9rem;
+    line-height: 2.5;
+    font-weight: bold;
+    color: #ffffff;
+}
+
+/* Slideshow Styles */
+.slideshow-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.slideshow-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+}
+
+.slideshow-image.active {
+    opacity: 1;
+    z-index: 1;
+}
+
+
