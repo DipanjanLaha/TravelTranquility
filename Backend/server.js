@@ -5,7 +5,6 @@ const path = require('path');
 const fs = require('fs');
 const authRoutes = require('./routes/auth');
 
-
 const app = express();
 const PORT = 5000;
 
@@ -14,29 +13,28 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Serve the images from the public directory
-app.use('/uploads', express.static('uploads'));
+// Serve images folder as static files
+app.use('/images', express.static(path.join(__dirname, 'images')));
 
-// Serve static files from the 'uploads' directory
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+// Endpoint to get list of cities
+app.get('/api/cities', (req, res) => {
+  const imagesDir = path.join(__dirname, 'images');
+  fs.readdir(imagesDir, (err, files) => {
+    if (err) {
+      return res.status(500).send({ error: 'Unable to scan directory' });
+    }
 
-// Sample city data with image URLs
-const citiesData = [
-  { City: 'Goa', imageUrl: '/uploads/goa_img.png' },
-  // Add more cities as needed
-];
+    // Filter image files with .png extension and remove file extensions to get city names
+    const cityNames = files
+      .filter(file => file.endsWith('.png')) // Adjusted to filter `.png` files
+      .map(file => ({
+        name: path.parse(file).name,
+        imageUrl: `/images/${file}`,
+      }));
 
-// API endpoint to fetch cities by state
-app.get('/cities', (req, res) => {
-  const { state } = req.query;
-  const filteredCities = citiesData.filter(city => city.City.toLowerCase() === state.toLowerCase());
-  if (filteredCities.length > 0) {
-    res.json(filteredCities);
-  } else {
-    res.status(404).json({ error: 'No cities found for this state' });
-  }
+    res.send({ cities: cityNames });
+  });
 });
-
 
 // Connect to MongoDB
 mongoose
@@ -46,7 +44,6 @@ mongoose
 
 // Routes
 app.use('/api/auth', authRoutes);
-
 
 // Start the server
 app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
