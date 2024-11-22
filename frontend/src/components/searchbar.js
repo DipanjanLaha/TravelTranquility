@@ -1,10 +1,39 @@
 import { useState, useEffect } from 'react';
 import { Search } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
+
+const ExploreButton = styled.button`
+  background-color: #2e582f;
+  color: white;
+  padding: 15px 20px;
+  border: none;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+
+  &:hover {
+    background-color: #67924d;
+  }
+
+  &:focus {
+    outline: none;
+  }
+`;
 
 const SearchBox = () => {
   const [query, setQuery] = useState('');
   const [suggestions, setSuggestions] = useState([]);
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+
+  const handleSearchClick = () => { navigate('/transport', {
+      state: { searchQuery: query },
+    });
+  };
 
   useEffect(() => {
     const fetchSuggestions = async () => {
@@ -69,6 +98,7 @@ const SearchBox = () => {
             ))}
           </div>
         )}
+        <ExploreButton onClick={handleSearchClick}>Explore Now</ExploreButton>
       </div>
     </div>
   );
