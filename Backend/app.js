@@ -101,7 +101,12 @@ app.get('/places', async (req, res) => {
   const { city } = req.query;
   try {
       const places = await Place.find({ City: city });
-      res.json(places);
+      if (places.length < 1) {
+        const places = await Place.find({ State: city });
+        res.json(places);
+      } else {
+        res.json(places);
+      }
   } catch (error) {
       res.status(500).json({ message: error.message });
   }

@@ -227,18 +227,8 @@ const SearchBar = () => {
   const [loading, setLoading] = useState(false);
 
   const handleSearchClick = () => {
-    navigate('/transport', { state: { searchQuery: searchInput, fromWhere: searchInputFrom } });
-    console.log("Travel Date:", travelDate);
-    navigate('/transport', {
-      state: {
-        searchQuery: searchInput,
-        fromWhere: searchInputFrom,
-        travelDate: travelDate, // Pass travel date along with other values
-      },
-    });
-
-
-
+    //*navigate('/transport', { state: { searchQuery: searchInput, fromWhere: searchInputFrom } });
+    //*console.log("Travel Date:", travelDate);
     navigate('/transport', {
       state: {
         searchQuery: searchInput,

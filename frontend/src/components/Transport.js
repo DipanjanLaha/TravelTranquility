@@ -7,6 +7,7 @@ import { useState, useEffect } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCaretRight } from '@fortawesome/free-solid-svg-icons';
 import { Modal, Button } from 'react-bootstrap';
+import SearchBox from "../components/searchbar";
 
 
 // Styled components for CityGrid and CityItem
@@ -136,7 +137,8 @@ const TourPage = () => {
     if (!searchQuery) return;
 
     // Fetch cities from backend
-    axios.get(`http://localhost:5000/cities?state=${searchQuery}`)
+    {/*axios.get(`http://localhost:5000/cities?state=${searchQuery}`)*/}
+    axios.get(`http://localhost:5000/places?city=${searchQuery}`)
       .then(response => {
         setCities(response.data);
         setError('');
@@ -217,8 +219,10 @@ const TourPage = () => {
 
       {/* List of Destinations */}
       <div className="topic">
-        <h1>Places to visit..</h1>
+      <h1>Places to visit..</h1>
+        <SearchBox></SearchBox>
       </div>
+      
       <CityGrid>
   {cities.map((city, index) => (
     <CityItem key={index}>
