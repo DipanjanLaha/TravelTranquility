@@ -30,7 +30,8 @@ const SearchBox = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  const handleSearchClick = () => { navigate('/transport', {
+  const handleSearchClick = () => {
+    navigate('/transport', {
       state: { searchQuery: query },
     });
   };
@@ -64,20 +65,29 @@ const SearchBox = () => {
     <div className="w-full max-w-md mx-auto">
       <div className="relative">
         {/* Search Input */}
-        <div className="relative">
+        <div style={{
+          display: "flex", // Enables flexbox
+          justifyContent: "center", // Centers content horizontally
+          alignItems: "center", // Centers content vertically
+          height: "10vh", // Full viewport height for vertical centering
+        }}>
+          <div className="px-2 pr-10 absolute right-3 top-2.5 text-gray-400">
+            {loading ? (
+              <div className="h-5 w-5 border-t-2 border-blue-500 rounded-full animate-spin" />
+            ) : (
+              <Search size={30} />
+            )}
+          </div>
           <input
             type="text"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Search..."
-            className="w-full px-4 py-2 pr-10 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="py-2 pr-10 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            style={{ width: "800px", height: "55px" }}
           />
-          <div className="absolute right-3 top-2.5 text-gray-400">
-            {loading ? (
-              <div className="h-5 w-5 border-t-2 border-blue-500 rounded-full animate-spin" />
-            ) : (
-              <Search size={20} />
-            )}
+          <div className="px-2 pr-10">
+          <ExploreButton onClick={handleSearchClick}>Explore Now</ExploreButton>
           </div>
         </div>
 
@@ -98,7 +108,7 @@ const SearchBox = () => {
             ))}
           </div>
         )}
-        <ExploreButton onClick={handleSearchClick}>Explore Now</ExploreButton>
+        
       </div>
     </div>
   );
