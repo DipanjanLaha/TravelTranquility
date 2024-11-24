@@ -25,73 +25,144 @@ const ExploreButton = styled.button`
 `;
 const SearchContainer = styled.div`
   display: flex;
-  justify-content: center; /* Center the search bar horizontally */
+  justify-content: center; /* Center the search bar */
   align-items: center;
-  padding: 20px;
-  gap: 20px; /* Add space between the search bar and button */
+  padding: 2px;
+  gap: 20px;
   position: relative;
+  width: 100%;
+`;
+const SearchInputWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  background-color: white; /* White background for the search bar */
+  border: none !important; /* Ensure no border */
+  border-radius: 35px; /* Fully rounded ends */
+  padding: 0 5px; /* Inner padding */
+  width: 700px;
+  height: 50px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Slight shadow for depth */
+  overflow: hidden;
+
+  /* Reset any inherited or external styles */
+  border-width: 0 !important;
+  border-style: none !important;
 `;
 
 const SearchInput = styled.input`
-  width: 500px; /* Increased width for a larger search bar */
-  padding: 15px 50px 15px 20px; /* Added more padding for better aesthetics */
-  border: 1px solid #ddd;
-  border-radius: 15px;
-  font-size: 1.2rem;
-  transition: box-shadow 0.3s ease, border-color 0.3s ease;
-  outline: none;
+  flex: 1;
+  border: none !important; /* Remove border */
+  outline: none !important; /* Remove outline */
+  padding: 0 20px;
+  font-size: 1rem;
+  color: #333; /* Dark text */
+  background-color: transparent; /* Match the wrapper's background */
+  border-radius: 30px; /* Match the wrapper's rounded ends */
+  margin: 0; /* Remove any browser default margin */
+  appearance: none; /* Remove any default styling on input */
 
+  /* Reset focus/active states */
   &:focus {
-    border-color: #67924d;
-    box-shadow: 0 0 5px rgba(103, 146, 77, 0.4);
+    outline: none !important;
+    border: none !important;
+    box-shadow: none !important;
+  }
+
+  &:active {
+    outline: none !important;
+    border: none !important;
+    box-shadow: none !important;
   }
 `;
+
+
 
 const SearchIconContainer = styled.div`
-  position: absolute;
-  right: 35px;
-  top: 50%;
-  transform: translateY(-50%);
-  color: #888;
+  background-color:  #2e582f; /* Blue background for the icon */
+  color: white; /* White icon */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 15px;
+  height: 100%;
+  border-top-right-radius: 35px; /* Rounded right end */
+  border-bottom-right-radius: 35px; /* Rounded right end */
   cursor: pointer;
-
-  &:hover {
-    color: #67924d;
-  }
 `;
-
 
 const SuggestionsDropdown = styled.div`
   position: absolute;
-  top: 50px;
-  width: 300px;
-  background-color: #2596be; /* Green background */
-  border: 1px solid #2e582f;
-  border-radius: 10px;
-  outline: 2px;
-  box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
-  max-height: 200px;
+  top: 60px;
+  width: 700px;
+  background-color: #ffffff; /* White background for the dropdown */
+  border: none;
+  color: #000000; /* Black text for better contrast */
+  border-radius: 15px; /* Smoothly rounded corners */
+  box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.15); /* Stronger shadow for depth */
+  max-height: 250px;
   overflow-y: auto;
   z-index: 10;
+  padding: 10px; /* Add padding for spacing inside the dropdown */
+
+  /* Smooth fade-in animation */
+  animation: fadeIn 0.3s ease-in-out;
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
 
   button {
     width: 100%;
-    padding: 10px 15px;
+    padding: 12px 20px;
     text-align: left;
-    background: none;
-    border: 1px;
-    color: white; /* White text */
+    background-color: transparent;
+    border: none;
+    border-radius: 10px; /* Rounded button corners */
+    color: #000000; /* Black text for the button */
+    font-size: 1rem; 
     cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
 
     &:hover {
-      background-color:#dcebee; /* Lighter green for hover effect */
+      background-color: rgba(0, 0, 0, 0.1); /* Light grey hover effect */
+      transform: scale(1.02); 
     }
 
     &:focus {
-      outline: 1.5px;
+      outline: none;
+      background-color: rgba(0, 0, 0, 0.15); /* Slightly darker grey for focus */
     }
   }
+
+  /* Add a scrollbar with a custom style */
+  ::-webkit-scrollbar {
+    width: 8px; 
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.3); /* Black thumb for contrast */
+    border-radius: 5px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(0, 0, 0, 0.5); /* Darker thumb on hover */
+  }
+
+  ::-webkit-scrollbar-track {
+    background-color: transparent; 
+  }
 `;
+
+
+
+
 
 
 const SearchBox = () => {
@@ -132,9 +203,8 @@ const SearchBox = () => {
   }, [query]);
 
   return (
-<<<<<<< HEAD
     <SearchContainer>
-      <div style={{ position: 'relative' }}>
+        <SearchInputWrapper>
         <SearchInput
           type="text"
           value={query}
@@ -143,41 +213,11 @@ const SearchBox = () => {
         />
         <SearchIconContainer>
           {loading ? (
-            <div className="h-5 w-5 border-t-2 border-green-500 rounded-full animate-spin" />
+            <div className="h-5 w-7 border-t-2 border-green-500 rounded-full animate-spin" />
           ) : (
             <Search size={20} />
           )}
         </SearchIconContainer>
-=======
-    <div className="w-full max-w-md mx-auto">
-      <div className="relative">
-        {/* Search Input */}
-        <div style={{
-          display: "flex", // Enables flexbox
-          justifyContent: "center", // Centers content horizontally
-          alignItems: "center", // Centers content vertically
-          height: "10vh", // Full viewport height for vertical centering
-        }}>
-          <div className="px-2 pr-10 absolute right-3 top-2.5 text-gray-400">
-            {loading ? (
-              <div className="h-5 w-5 border-t-2 border-blue-500 rounded-full animate-spin" />
-            ) : (
-              <Search size={30} />
-            )}
-          </div>
-          <input
-            type="text"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search..."
-            className="py-2 pr-10 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            style={{ width: "800px", height: "55px" }}
-          />
-          <div className="px-2 pr-10">
-          <ExploreButton onClick={handleSearchClick}>Explore Now</ExploreButton>
-          </div>
-        </div>
->>>>>>> 1246a5b9ddf2f462b0df54cfa0e3db90b6e72caa
 
         {suggestions.length > 0 && (
           <SuggestionsDropdown>
@@ -194,13 +234,10 @@ const SearchBox = () => {
             ))}
           </SuggestionsDropdown>
         )}
-<<<<<<< HEAD
-=======
-        
->>>>>>> 1246a5b9ddf2f462b0df54cfa0e3db90b6e72caa
-      </div>
+        </SearchInputWrapper>
       <ExploreButton onClick={handleSearchClick}>Explore Now</ExploreButton>
     </SearchContainer>
   );
 };
+
 export default SearchBox;

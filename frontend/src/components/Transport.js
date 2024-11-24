@@ -140,13 +140,8 @@ const TourPage = () => {
     if (!searchQuery) return;
 
     // Fetch cities from backend
-<<<<<<< HEAD
     axios.get(`http://localhost:5000/cities?state=${searchQuery}`)
     //*axios.get(`http://localhost:5000/places?city=${searchQuery}`)
-=======
-    //axios.get(`http://localhost:5000/cities?state=${searchQuery}`)
-    axios.get(`http://localhost:5000/places?city=${searchQuery}`)
->>>>>>> 1246a5b9ddf2f462b0df54cfa0e3db90b6e72caa
       .then(response => {
         setCities(response.data);
         groupCities(response.data);
@@ -254,15 +249,9 @@ const TourPage = () => {
       {error && <p style={{ color: 'red', textAlign: 'center' }}>{error}</p>}
 
       {/* List of Destinations */}
-      <SearchBox></SearchBox>
-
       <div className="topic">
-<<<<<<< HEAD
-      <h1>Places to visit..</h1>
-=======
         <h1>Places to visit..</h1>
         <SearchBox></SearchBox>
->>>>>>> 1246a5b9ddf2f462b0df54cfa0e3db90b6e72caa
       </div>
 
       <div>
