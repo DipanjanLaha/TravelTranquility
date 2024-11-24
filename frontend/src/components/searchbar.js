@@ -23,6 +23,76 @@ const ExploreButton = styled.button`
     outline: none;
   }
 `;
+const SearchContainer = styled.div`
+  display: flex;
+  justify-content: center; /* Center the search bar horizontally */
+  align-items: center;
+  padding: 20px;
+  gap: 20px; /* Add space between the search bar and button */
+  position: relative;
+`;
+
+const SearchInput = styled.input`
+  width: 500px; /* Increased width for a larger search bar */
+  padding: 15px 50px 15px 20px; /* Added more padding for better aesthetics */
+  border: 1px solid #ddd;
+  border-radius: 15px;
+  font-size: 1.2rem;
+  transition: box-shadow 0.3s ease, border-color 0.3s ease;
+  outline: none;
+
+  &:focus {
+    border-color: #67924d;
+    box-shadow: 0 0 5px rgba(103, 146, 77, 0.4);
+  }
+`;
+
+const SearchIconContainer = styled.div`
+  position: absolute;
+  right: 35px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #888;
+  cursor: pointer;
+
+  &:hover {
+    color: #67924d;
+  }
+`;
+
+
+const SuggestionsDropdown = styled.div`
+  position: absolute;
+  top: 50px;
+  width: 300px;
+  background-color: #2596be; /* Green background */
+  border: 1px solid #2e582f;
+  border-radius: 10px;
+  outline: 2px;
+  box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 10;
+
+  button {
+    width: 100%;
+    padding: 10px 15px;
+    text-align: left;
+    background: none;
+    border: 1px;
+    color: white; /* White text */
+    cursor: pointer;
+
+    &:hover {
+      background-color:#dcebee; /* Lighter green for hover effect */
+    }
+
+    &:focus {
+      outline: 1.5px;
+    }
+  }
+`;
+
 
 const SearchBox = () => {
   const [query, setQuery] = useState('');
@@ -61,29 +131,24 @@ const SearchBox = () => {
   }, [query]);
 
   return (
-    <div className="w-full max-w-md mx-auto">
-      <div className="relative">
-        {/* Search Input */}
-        <div className="relative">
-          <input
-            type="text"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search..."
-            className="w-full px-4 py-2 pr-10 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-          <div className="absolute right-3 top-2.5 text-gray-400">
-            {loading ? (
-              <div className="h-5 w-5 border-t-2 border-blue-500 rounded-full animate-spin" />
-            ) : (
-              <Search size={20} />
-            )}
-          </div>
-        </div>
+    <SearchContainer>
+      <div style={{ position: 'relative' }}>
+        <SearchInput
+          type="text"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          placeholder="Search..."
+        />
+        <SearchIconContainer>
+          {loading ? (
+            <div className="h-5 w-5 border-t-2 border-green-500 rounded-full animate-spin" />
+          ) : (
+            <Search size={20} />
+          )}
+        </SearchIconContainer>
 
-        {/* Suggestions Dropdown */}
         {suggestions.length > 0 && (
-          <div className="absolute w-full mt-1 bg-white border rounded-lg shadow-lg max-h-60 overflow-auto">
+          <SuggestionsDropdown>
             {suggestions.map((suggestion, index) => (
               <button
                 key={index}
@@ -91,17 +156,15 @@ const SearchBox = () => {
                   setQuery(suggestion);
                   setSuggestions([]);
                 }}
-                className="w-full px-4 py-2 text-left hover:bg-gray-100 focus:outline-none focus:bg-gray-100"
               >
                 {suggestion}
               </button>
             ))}
-          </div>
+          </SuggestionsDropdown>
         )}
-        <ExploreButton onClick={handleSearchClick}>Explore Now</ExploreButton>
       </div>
-    </div>
+      <ExploreButton onClick={handleSearchClick}>Explore Now</ExploreButton>
+    </SearchContainer>
   );
 };
-
 export default SearchBox;
