@@ -1,7 +1,7 @@
 import React from "react";
 import "./Transport.css"; // CSS for styling both Header and TourCards
 import styled from 'styled-components';
-import {  useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import axios from 'axios';
 import { useState, useEffect } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -131,16 +131,25 @@ const TourPage = () => {
   const [loading, setLoading] = useState(false);
   const [selectedCities, setSelectedCities] = useState([]); // New state for itinerary
   const [showModal, setShowModal] = useState(false); // Modal visibility state
+  const [showModal2, setShowModal2] = useState(false);
+  const [groupedCities, setGroupedCities] = useState({});
+  const [selectedGroup, setSelectedGroup] = useState(null);
 
 
   useEffect(() => {
     if (!searchQuery) return;
 
     // Fetch cities from backend
+<<<<<<< HEAD
     axios.get(`http://localhost:5000/cities?state=${searchQuery}`)
     //*axios.get(`http://localhost:5000/places?city=${searchQuery}`)
+=======
+    //axios.get(`http://localhost:5000/cities?state=${searchQuery}`)
+    axios.get(`http://localhost:5000/places?city=${searchQuery}`)
+>>>>>>> 1246a5b9ddf2f462b0df54cfa0e3db90b6e72caa
       .then(response => {
         setCities(response.data);
+        groupCities(response.data);
         setError('');
       })
       .catch(() => {
@@ -148,6 +157,32 @@ const TourPage = () => {
         setCities([]);
       });
   }, [searchQuery]);
+
+  // Group cities by a specific key (e.g., 'City')
+  const groupCities = (data) => {
+    const grouped = data.reduce((acc, item) => {
+      const key = item.City; // Change to your grouping key
+      if (!acc[key]) {
+        acc[key] = [];
+      }
+      acc[key].push(item);
+      return acc;
+    }, {});
+    setGroupedCities(grouped);
+    console.log(grouped)
+  };
+
+   // Handle modal open
+   const handleShowModal = (group) => {
+    setSelectedGroup(group);
+    setShowModal(true);
+  };
+
+  // Handle modal close
+  const handleCloseModal = () => {
+    setShowModal(false);
+    setSelectedGroup(null);
+  };
 
   useEffect(() => {
     if (!fromWhere || !searchQuery) return;
@@ -160,7 +195,7 @@ const TourPage = () => {
       .catch(error => {
         console.error("Error fetching the train data:", error);
       });
-  }, [fromWhere,searchQuery]);
+  }, [fromWhere, searchQuery]);
 
   const navigate = useNavigate();
 
@@ -184,11 +219,12 @@ const TourPage = () => {
     if (selectedCities.length === 0) {
       alert("Please add places to the itinerary.");
     } else {
-      setShowModal(true); // Show the modal
+      setShowModal2(true); // Show the modal
     }
   };
 
-  const handleCloseModal = () => setShowModal(false);
+  //const handleShowModal2 = () => setShowModal2(true);
+  const handleCloseModal2 = () => setShowModal2(false);
 
   return (
     <div className="tour-page-container">
@@ -221,41 +257,117 @@ const TourPage = () => {
       <SearchBox></SearchBox>
 
       <div className="topic">
+<<<<<<< HEAD
       <h1>Places to visit..</h1>
+=======
+        <h1>Places to visit..</h1>
+        <SearchBox></SearchBox>
+>>>>>>> 1246a5b9ddf2f462b0df54cfa0e3db90b6e72caa
       </div>
-      
-      <CityGrid>
-  {cities.map((city, index) => (
-    <CityItem key={index}>
-      <div className="card-body">
-        {/* Log the image URL */}
-        {console.log(`Image URL: http://localhost:5000/uploads/${city.imageUrl}`)}
-        <img
-          src={`http://localhost:5000/uploads/${city.imageUrl}`}
-          alt={city.City}
-          className="city-image"
-          style={{ width: '100%', height: '200px', objectFit: 'cover' }}
-        />
-        <h5 className="card-title">{city.City}</h5>
-        <p className="card-text">Explore the best places in {city.City}!</p>
-        <button
-          className="btn btn-primary"
-          onClick={() => handleCityClick(city)}
-        >
-          Explore More
-        </button>
-        <button
-          className="btn btn-primary"
-          onClick={() => handleAddToItinerary(city)}
-        >
-          Add To Itenary
-        </button>
-      </div>
-    </CityItem>
-  ))}
-</CityGrid>
 
-<div className="mt-4 text-center">
+      <div>
+      <CityGrid>
+        {Object.keys(groupedCities).map((group, index) => (
+          <CityItem key={index} >
+            <div className="card-body">
+              <h5 className="card-title">{group}</h5>
+              <img src={`http://localhost:5000/uploads/${group}.jpg`}
+              style={{
+                width: "100%",
+                height: "150px",
+                objectFit: "cover",
+                marginBottom: "10px",
+              }}
+              alt={group}/>
+              <p className="card-text">
+                Explore the best places in {group}!
+              </p>
+              <button
+                className="btn btn-primary"
+                onClick={() => handleShowModal(group)}
+              >
+                View All in {group}
+              </button>
+            </div>
+          </CityItem>
+        ))}
+      </CityGrid>
+
+      {/* React Bootstrap Modal */}
+      <Modal show={showModal} onHide={handleCloseModal} size="xl">
+        <Modal.Header closeButton>
+          <Modal.Title>Places in {selectedGroup}</Modal.Title>
+        </Modal.Header>
+        <Modal.Body
+        style={{
+          maxHeight: "600px", // Set a maximum height
+          overflowY: "auto",  // Enable vertical scrolling
+        }}>
+          {selectedGroup &&
+            groupedCities[selectedGroup].map((city, index) => (
+              <div key={index} className="modal-item">
+                <h5>{city.Place}</h5>
+                <img
+                  src={`http://localhost:5000/uploads/${city.imageUrl}`}
+                  alt={city.City}
+                  className="city-image"
+                  style={{
+                    width: "100%",
+                    height: "150px",
+                    objectFit: "cover",
+                    marginBottom: "10px",
+                  }}
+                />
+                <p>{city.Place_desc}</p>
+                <button
+                className="btn btn-primary"
+                onClick={() => handleAddToItinerary([city.Place, city.City])}
+              >
+                Add To Itenary
+              </button>
+              </div>
+            ))}
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleCloseModal}>
+            Close
+          </Button>
+        </Modal.Footer>
+      </Modal>
+    </div>
+
+      {/*<CityGrid>
+        {cities.map((city, index) => (
+          <CityItem key={index}>
+            <div className="card-body">
+              {/* Log the image URL */}
+              {/*{console.log(`Image URL: http://localhost:5000/uploads/${city.imageUrl}`)}
+              <img
+                src={`http://localhost:5000/uploads/${city.imageUrl}`}
+                alt={city.City}
+                className="city-image"
+                style={{ width: '100%', height: '200px', objectFit: 'cover' }}
+              />
+              <h5 className="card-title">{city.City}</h5>
+              <p className="card-text">Explore the best places in {city.City}!</p>
+              <button
+                className="btn btn-primary"
+                onClick={() => handleCityClick(city)}
+              >
+                Explore More
+              </button>
+              <button
+                className="btn btn-primary"
+                onClick={() => handleAddToItinerary(city)}
+              >
+                Add To Itenary
+              </button>
+            </div>
+          </CityItem>
+        ))}
+      </CityGrid>*/}
+
+      <div className="mt-4 text-center">
         <button className="btn btn-success" onClick={handleGenerateItinerary}>
           Generate Itinerary
         </button>
@@ -271,7 +383,7 @@ const TourPage = () => {
               <img src={tour.image} alt={tour.title} className="tour-image" />
               <h3>{tour.title}</h3>
               <button className="arrow-button" onClick={() => handleTourClick(tour.route)}>
-              <FontAwesomeIcon icon={faCaretRight} size="2x" />              
+                <FontAwesomeIcon icon={faCaretRight} size="2x" />
               </button>
             </div>
           ))}
@@ -279,7 +391,7 @@ const TourPage = () => {
       </section>
 
       {/* Bootstrap Modal for Itinerary */}
-      <Modal show={showModal} onHide={handleCloseModal}>
+      <Modal show={showModal2} onHide={handleCloseModal2}>
         <Modal.Header closeButton>
           <Modal.Title>Your Itinerary</Modal.Title>
         </Modal.Header>
@@ -287,13 +399,13 @@ const TourPage = () => {
           <ul className="list-group">
             {selectedCities.map((city, index) => (
               <li key={index} className="list-group-item">
-                {city.City}
+                <h5>{"Day "+[index+1]+" "+city[0].slice(4)+", "+city[1]}</h5>
               </li>
             ))}
           </ul>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleCloseModal}>
+          <Button variant="secondary" onClick={handleCloseModal2}>
             Close
           </Button>
         </Modal.Footer>
