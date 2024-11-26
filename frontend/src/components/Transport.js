@@ -223,31 +223,6 @@ const TourPage = () => {
 
   return (
     <div className="tour-page-container">
-      {/* Header Section */}
-      <section className="header-section">
-        <h1>Top values for you</h1>
-        <p>Try a variety of benefits when using our services</p>
-        <div className="features">
-          <div className="feature-item">
-            <img src="./booking.gif" alt="Easy Booking" />
-            <h3>Easy booking</h3>
-            <p>Quick and easy booking for upcoming dates</p>
-          </div>
-          <div className="feature-item">
-            <img src="./guide1.gif" alt="Digital Tour Guide" />
-            <h3>Digital tour guide</h3>
-            <p>Our digital tour guide is ready to guide your trip</p>
-          </div>
-          <div className="feature-item">
-            <img src="./promo.gif" alt="Lots of Promos" />
-            <h3>Lots of promos</h3>
-            <p>Various promotions and drawings of tours</p>
-          </div>
-        </div>
-      </section>
-
-      {error && <p style={{ color: 'red', textAlign: 'center' }}>{error}</p>}
-
       {/* List of Destinations */}
       <div className="topic">
         <h1>Places to visit..</h1>

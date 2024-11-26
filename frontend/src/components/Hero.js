@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import Message from './Message';
+import './Hero.css';
 import { MdClose } from 'react-icons/md';
 
 
@@ -118,71 +119,10 @@ const TypingIndicator = styled.div`
   margin: 5px 0;
 `;
 
-// SearchBar Styles
-const SearchBarWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 100%;
-  z-index: 1;
-`;
-
-const SearchBarContainer = styled.div`
-  background-color: rgba(255, 255, 255, 0.7);
-  padding: 30px;
-  border-radius: 20px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-  max-width: 1200px;
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-`;
-
-const InputContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  margin-right: 20px;
-  position: relative;
-
-  &::after {
-    content: '';
-    position: absolute;
-    right: 15px;
-    top: 50%;
-    transform: translateY(-50%);
-    pointer-events: none;
-    color: #7aab35;
-  }
-`;
-
-const InputLabel = styled.label`
-  font-size: 0.9rem;
-  font-weight: bold;
-  margin-bottom: 5px;
-  color: #2e582f;
-`;
-
-const InputField = styled.input`
-  padding: 10px 12px;
-  border: 2px solid #ccc;
-  border-radius: 10px;
-  font-size: 1rem;
-  min-width: 180px;
-  &:focus {
-    border-color: #7aab35;
-    outline: none;
-  }
-`;
-
 const ExploreButton = styled.button`
   background-color: #2e582f;
   color: white;
-  padding: 15px 20px;
+  padding: 12px 17px;
   border: none;
   border-radius: 10px;
   font-size: 1rem;
@@ -203,20 +143,23 @@ const ExploreButton = styled.button`
 const PopularSearch = styled.div`
   margin-top: 20px;
   text-align: center;
-  font-size: 0.9rem;
+  font-size: 1rem;
   font-weight: 200px;
-  color: white;
+  gap:10px;
+  color: black;
 
   button {
     background: none;
     border: none;
-    color: white;
+    color: black;
     font-weight: bold;
     cursor: pointer;
 
     
   }
 `;
+
+
 
 const SearchBar = () => {
   const [searchInput, setSearchInput] = useState('');
@@ -265,21 +208,43 @@ const SearchBar = () => {
 
 
   return (
-    <SearchBarWrapper>
-      <div>
-        <SearchBarContainer>
-          <InputContainer>
-            <InputLabel>Location</InputLabel>
-            <InputField
-              type="text"
-              value={searchInput}
-              onChange={(e) => setSearchInput(e.target.value)}
-              placeholder="Enter your destination"
-            />
+<div className='app'>
+            <div className="transparent-container">
+                <nav className="navbar">
+                    <div className="transparent-containers">
+                        <ul className="navbar-links">
+                        <li><Link to="/">Home</Link></li>
+                        <li><Link to="/Destination">Destinations</Link></li>
+                        <li><Link to="/Feedback">Feedbacks</Link></li>
+                         <li><Link to="/Blog">Blog</Link></li>
+                         <li><Link to="/Contact">Contact</Link></li>
+                        </ul>
+
+                    </div>
+                </nav>
+                <h1 className="explore-heading">
+                    Explore beyond Boundaries,
+                    <span className="explore-subheading">Travel beyond Expectations</span>
+                    <span className="explore-subheadings">
+                        We don't just plan trips, we craft unforgettable adventures.
+                    </span>
+                </h1>
+
+    <div className="search-bar-wrapper">
+                    <div className="search-bar-container">
+        <div className="input-container">
+                            <label className="input-label">Location</label>
+                            <input
+                                type="text"
+                                value={searchInput}
+                                onChange={(e) => setSearchInput(e.target.value)}
+                                placeholder="Enter your destination"
+                                />
+                        </div>
 
             {/* Suggestions Dropdown */}
             {suggestions.length > 0 && (
-              <div className="absolute w-full mt-1 bg-white border rounded-lg shadow-lg max-h-60 overflow-auto">
+  <div className="suggestions-dropdown">
                 {suggestions.map((suggestion, index) => (
                   <button
                     key={index}
@@ -293,35 +258,38 @@ const SearchBar = () => {
                   </button>
                 ))}
               </div>
-            )}
-          </InputContainer>
+              
+              )}
+          
 
-          <InputContainer>
-            <InputLabel>From</InputLabel>
-            <InputField
-              type="text"
-              value={searchInputFrom}
-              onChange={(e) => setSearchInputFrom(e.target.value)}
-              placeholder="Enter your location"
-            />
-          </InputContainer>
+          <div className="input-container">
+                            <label className="input-label">From</label>
+                            <input
+                                type="text"
+                                value={searchInputFrom}
+                                onChange={(e) => setSearchInputFrom(e.target.value)}
+                                placeholder="Enter your location"
+                                className="input-field"
+                            />
+                        </div>
 
-          <InputContainer>
-            <InputLabel>Date</InputLabel>
-            <InputField
-              type="date"
-              value={travelDate}
-              onChange={(e) => setTravelDate(e.target.value)} // Update state on date change
-            />
-          </InputContainer>
+          <div className="input-container">
+                            <label className="input-label">Date</label>
+                            <input
+                                type="date"
+                                value={travelDate}
+                                onChange={(e) => setTravelDate(e.target.value)}
+                                className="input-field"
+                            />
+                        </div>
 
-          <InputContainer>
-            <InputLabel>People</InputLabel>
-            <InputField type="number" placeholder="How many people?" />
-          </InputContainer>
+                        <div className="input-container">
+                            <label className="input-label">People</label>
+                            <input type="number" placeholder="How many people?" className="input-field" />
+                        </div>
 
           <ExploreButton onClick={handleSearchClick}>Explore Now</ExploreButton>
-        </SearchBarContainer>
+        
 
         <PopularSearch>
           Popular Search:
@@ -331,7 +299,9 @@ const SearchBar = () => {
           <button onClick={() => console.log('Varanasi clicked')}>Varanasi</button>
         </PopularSearch>
       </div>
-    </SearchBarWrapper>
+ </div>
+</div>
+</div>
   );
 };
 
@@ -347,8 +317,15 @@ const App = () => {
   const firstTimeOpenRef = useRef(true); // Track if chatbot is opened for the first time
 
   const videoSrc = '/tranquility.mp4';
-  const images = ['/g.jpg', '/Czech-Fields-Houses.jpg', '/Gangtok.jpg', '/pool.jpg', '/temple.jpeg.jpg'];
+  const images = [
+    '/g.jpg',
+    '/Czech-Fields-Houses.jpg',
+    '/Gangtok.jpg',
+    '/pool.jpg',
+    '/temple.jpeg.jpg',
+];
 
+  
   useEffect(() => {
     const timer = setTimeout(() => setLoading(false), 3000);
     return () => clearTimeout(timer);
@@ -356,11 +333,11 @@ const App = () => {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentImageIndex((prevIndex) => (prevIndex + 1) %
-        images.length);
+        setCurrentImageIndex((prevIndex) => (prevIndex + 1) % images.length);
     }, 5000);
     return () => clearInterval(interval);
-  }, [images.length]);
+}, [images.length]);
+
 
   useEffect(() => {
     if (chatBodyRef.current) {
