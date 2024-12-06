@@ -140,8 +140,8 @@ const TourPage = () => {
     if (!searchQuery) return;
 
     // Fetch cities from backend
-    axios.get(`http://localhost:5000/cities?state=${searchQuery}`)
-    //*axios.get(`http://localhost:5000/places?city=${searchQuery}`)
+    //axios.get(`http://localhost:5000/cities?state=${searchQuery}`)
+    axios.get(`http://localhost:5000/places?city=${searchQuery}`)
       .then(response => {
         setCities(response.data);
         groupCities(response.data);
@@ -201,7 +201,12 @@ const TourPage = () => {
 
   // Function to handle tour navigation
   const handleTourClick = (route) => {
-    navigate(route); // Navigates to the respective tour route (train, bus, flight)
+    navigate(route, {
+      state: {
+        searchInput: searchQuery,
+        searchInputFrom: fromWhere, // Pass travel date along with other values
+      },
+    }); // Navigates to the respective tour route (train, bus, flight)
   };
 
   const handleAddToItinerary = (city) => {
@@ -214,7 +219,48 @@ const TourPage = () => {
     if (selectedCities.length === 0) {
       alert("Please add places to the itinerary.");
     } else {
-      setShowModal2(true); // Show the modal
+      //setShowModal2(true); // Show the modal
+
+      // Open a new tab
+      console.log(selectedCities);
+    const newTab = window.open("", "_blank");
+
+    // Check if the tab was successfully opened
+    if (newTab) {
+      // Generate HTML content for the itinerary
+      const itineraryContent = `
+        <!DOCTYPE html>
+        <html>
+          <head>
+            <title>Itinerary</title>
+            <style>
+              body { font-family: Arial, sans-serif; margin: 20px; }
+              h1 { color: #333; text-align: center; }
+              h3 { color: red; }
+              ul { list-style-type: none; padding: 0; }
+              li { margin: 5px 0; font-size: 18px; }
+            </style>
+          </head>
+          <body>
+            <h1>Your Itinerary</h1>
+            <ul>
+              ${selectedCities.map((city, index) => `
+                  <li>
+                    <h3>Day ${index + 1} ${city[1]}: ${city[0].slice(4)}</h3>
+                    <p>${city[2]}</p>
+                  </li>`
+                ).join("")}
+            </ul>
+          </body>
+        </html>
+      `;
+
+      // Write the content to the new tab
+      newTab.document.write(itineraryContent);
+      newTab.document.close(); // Close the document stream
+    } else {
+      alert("Unable to open a new tab. Please check your browser's popup blocker settings.");
+    }
     }
   };
 
@@ -285,7 +331,7 @@ const TourPage = () => {
                 <p>{city.Place_desc}</p>
                 <button
                 className="btn btn-primary"
-                onClick={() => handleAddToItinerary([city.Place, city.City])}
+                onClick={() => handleAddToItinerary([city.Place, city.City, city.Place_desc])}
               >
                 Add To Itenary
               </button>

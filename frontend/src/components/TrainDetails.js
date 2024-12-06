@@ -1,16 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';  // You can use axios for API calls or fetch API
+import { useLocation } from "react-router-dom";
 import './TrainDetails.css';
 
 
 
 
 function TrainDetails() {
+  const location = useLocation();
   const [trains, setTrains] = useState([]);
-  const [srcCode, setSrcCode] = useState('BWN');  // Default value for source code
-  const [destCode, setDestCode] = useState('HWH');  // Default value for destination code
   const [loading, setLoading] = useState(false);  // To manage loading state
   const [error, setError] = useState(null);  // To manage errors
+  const { searchInput, searchInputFrom } = location.state || {};
+  const [srcCode, setSrcCode] = useState(searchInput);  // Default value for source code
+  const [destCode, setDestCode] = useState(searchInputFrom);  // Default value for destination code
 
   // Fetch train details when srcCode or destCode changes
   useEffect(() => {
@@ -32,8 +35,7 @@ function TrainDetails() {
 
   // Function to handle form submission
   const handleFormSubmit = (e) => {
-    e.preventDefault();
-    // Fetch will automatically trigger due to useEffect watching srcCode and destCode
+    e.preventDefault();// Fetch will automatically trigger due to useEffect watching srcCode and destCode
   };
 
   return (
@@ -43,7 +45,7 @@ function TrainDetails() {
       {/* Form for source and destination input */}
       <form onSubmit={handleFormSubmit}>
         <label>
-          Source Code:
+          Source Station:
           <input
             type="text"
             value={srcCode}
@@ -52,7 +54,7 @@ function TrainDetails() {
         </label>
         <br />
         <label>
-          Destination Code:
+          Destination Station:
           <input
             type="text"
             value={destCode}
@@ -73,6 +75,7 @@ function TrainDetails() {
           <thead>
             <tr>
               <th>#</th>
+              <th>Train Number</th>
               <th>Train Name</th>
               <th>Source</th>
               <th>Destination</th>
@@ -86,6 +89,7 @@ function TrainDetails() {
             {trains.map((train, index) => (
               <tr key={index}>
                 <td>{index + 1}</td>
+                <td>{train.trainNumber || 'N/A'}</td>
                 <td>{train.trainName}</td>
                 <td>{train.sourceStation || 'N/A'}</td>
                 <td>{train.destinationStation || 'N/A'}</td>

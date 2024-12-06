@@ -70,7 +70,7 @@ app.get('/trains/:sourceStation/:destinationStation', async (req, res) => {
   const { sourceStation, destinationStation } = req.params;
   
   // Fetch train details
-  const trains = await getTrainsBetweenStations(sourceStation, destinationStation);
+  const trains = await getTrainsBetweenStations(getStationCode(sourceStation), getStationCode(destinationStation));
   
   if (trains.length === 0) {
     res.status(404).send('No trains found');
